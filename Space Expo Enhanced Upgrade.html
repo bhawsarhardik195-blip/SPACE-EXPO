@@ -1640,10 +1640,9 @@ body.xo #xp{transform:none;opacity:1;pointer-events:auto}#xp .xl{color:var(--mut
     }
   }
 
+  bindHomepageHandlers();
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', bindHomepageHandlers);
-  } else {
-    bindHomepageHandlers();
   }
 })();
 </script>
