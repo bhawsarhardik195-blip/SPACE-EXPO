@@ -2070,8 +2070,8 @@ const AudioManager = {
     const startVol = a.volume;
     const startTime = performance.now();
     const fadeStep = (now) => {
-      const p = Math.min(1, (now - startTime) / (durSec * 1000));
-      a.volume = Math.max(0, startVol * (1 - p));
+      const p = Math.max(0, Math.min(1, (now - startTime) / (durSec * 1000)));
+      a.volume = Math.max(0, Math.min(1, startVol * (1 - p)));
       if (p < 1) {
         requestAnimationFrame(fadeStep);
       } else {
@@ -2095,8 +2095,8 @@ const AudioManager = {
       const target = this.effVol('ambience');
       const startT = performance.now();
       const step = (now) => {
-        const prog = Math.min(1, (now - startT) / 1200);
-        if (this.tracks.tourAmbience) this.tracks.tourAmbience.volume = target * prog;
+        const prog = Math.max(0, Math.min(1, (now - startT) / 1200));
+        if (this.tracks.tourAmbience) this.tracks.tourAmbience.volume = Math.max(0, Math.min(1, target * prog));
         if (prog < 1) requestAnimationFrame(step);
       };
       requestAnimationFrame(step);
@@ -2109,8 +2109,8 @@ const AudioManager = {
     const startVol = a.volume;
     const startTime = performance.now();
     const fadeStep = (now) => {
-      const p = Math.min(1, (now - startTime) / (durSec * 1000));
-      a.volume = Math.max(0, startVol * (1 - p));
+      const p = Math.max(0, Math.min(1, (now - startTime) / (durSec * 1000)));
+      a.volume = Math.max(0, Math.min(1, startVol * (1 - p)));
       if (p < 1) {
         requestAnimationFrame(fadeStep);
       } else {
@@ -2140,8 +2140,8 @@ const AudioManager = {
     const startVol = a.volume;
     const startT = performance.now();
     const step = (now) => {
-      const p = Math.min(1, (now - startT) / (durSec * 1000));
-      a.volume = Math.max(0, startVol * (1 - p));
+      const p = Math.max(0, Math.min(1, (now - startT) / (durSec * 1000)));
+      a.volume = Math.max(0, Math.min(1, startVol * (1 - p)));
       if (p < 1) {
         requestAnimationFrame(step);
       } else {
