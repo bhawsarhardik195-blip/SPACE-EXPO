@@ -382,6 +382,12 @@ body.xo #xp{transform:none;opacity:1;pointer-events:auto}#xp .xl{color:var(--mut
   display: inline-flex;
   align-items: center;
   gap: 10px;
+  position: relative;
+  z-index: 30;
+  pointer-events: auto;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
 }
 .hp-btn-play {
   background: linear-gradient(135deg, #1fa2ff 0%, #12d8fa 50%, #06a4d4 100%);
@@ -1572,6 +1578,76 @@ body.xo #xp{transform:none;opacity:1;pointer-events:auto}#xp .xl{color:var(--mut
   </div>
 </div>
 
+<!-- EARLY RESILIENT HOMEPAGE INTERACTION HANDLERS -->
+<script>
+(function() {
+  window.__launchRequested = false;
+  window.__spaceExpoReady = false;
+
+  function bindHomepageHandlers() {
+    var playBtn = document.getElementById('btn-play');
+    var aboutBtn = document.getElementById('btn-about');
+    var closeBtn = document.getElementById('btn-about-close');
+    var modal = document.getElementById('about-modal');
+
+    if (aboutBtn && !aboutBtn.__earlyBound) {
+      aboutBtn.__earlyBound = true;
+      aboutBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        if (modal) modal.classList.add('open');
+      });
+    }
+
+    if (closeBtn && !closeBtn.__earlyBound) {
+      closeBtn.__earlyBound = true;
+      closeBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        if (modal) modal.classList.remove('open');
+      });
+    }
+
+    if (modal && !modal.__earlyBound) {
+      modal.__earlyBound = true;
+      modal.addEventListener('click', function(e) {
+        if (e.target === modal) modal.classList.remove('open');
+      });
+    }
+
+    if (playBtn && !playBtn.__earlyBound) {
+      playBtn.__earlyBound = true;
+      playBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        try {
+          if (window.AudioManager && typeof window.AudioManager.unlock === 'function') {
+            window.AudioManager.unlock();
+            window.AudioManager.fadeIntroMusic(1.4);
+          }
+        } catch(err) {}
+
+        if (window.__spaceExpoReady && typeof window.launchSimulator === 'function') {
+          window.launchSimulator();
+        } else {
+          window.__launchRequested = true;
+          var span = playBtn.querySelector('span');
+          if (span) span.textContent = '⏳';
+          playBtn.childNodes.forEach(function(node) {
+            if (node.nodeType === 3 && node.textContent.trim().length > 0) {
+              node.textContent = ' LAUNCHING SIMULATOR...';
+            }
+          });
+        }
+      });
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', bindHomepageHandlers);
+  } else {
+    bindHomepageHandlers();
+  }
+})();
+</script>
+
 <!-- SCALE TOUR NAVIGATION & SKIP CONTROLS -->
 <div id="tour-nav-bar">
   <button id="btn-tour-prev" title="Previous Stage">◀ PREV</button>
@@ -1743,7 +1819,20 @@ var libs=[
 ];
 var optional=[3,4,5,6,7,8]; /* post-processing: app has its own try/catch fallback */
 function fail(msg){var f=document.getElementById('fb');if(f){f.style.display='grid';var d=f.firstElementChild;if(d)d.textContent=msg}}
-function start(){var m=document.getElementById('main-src');var sc=document.createElement('script');sc.text=m.textContent;document.body.appendChild(sc)}
+function start(){
+ function exec(){
+  var m=document.getElementById('main-src');
+  if(!m)return;
+  var sc=document.createElement('script');
+  sc.text=m.textContent;
+  document.body.appendChild(sc);
+ }
+ if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded',exec);
+ }else{
+  exec();
+ }
+}
 function load(n){
  if(n>=libs.length){
   if(typeof THREE==='undefined'||typeof gsap==='undefined'||typeof THREE.OrbitControls==='undefined'){fail('Could not load the 3D libraries (three.js / GSAP). Check your internet connection or disable the ad-blocker, then reload.');return}
@@ -5716,6 +5805,15 @@ if ($('#btn-tour-next')) $('#btn-tour-next').onclick = () => tourNext();
 
 updatePlanUI();
 updateCraftUI();
+window.__spaceExpoReady = true;
+window.launchSimulator = launchSimulator;
+if (window.__launchRequested) {
+  try {
+    AudioManager.unlock();
+    AudioManager.fadeIntroMusic(1.4);
+  } catch(e) {}
+  launchSimulator();
+}
 window.__spaceExpo = {
   B, by, MU, AUKM, MU_EARTH, MU_MOON, MU_MARS,
   calc, evalOpt, launchMission, abortMission,
