@@ -1,0 +1,42 @@
+# SPACE EXPO — Production Deployment .gitignore
+
+# Operating System & Environment Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# Development & Scratch Artifacts
+scratch/
+*.tmp
+*.log
+*.bak
+*backup*
+
+# Node / Package Manager Cache
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Secret, Credential & Key Files
+*.env
+*.env.*
+*.key
+*.pem
+*.cert
+*.pfx
+*.p12
+credentials.json
+client_secret*.json
+
+# IDE & Editor Directories
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
