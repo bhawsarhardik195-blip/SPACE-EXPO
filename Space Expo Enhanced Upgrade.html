@@ -1,5 +1,8 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>SPACE EXPO – Advanced Interactive Solar System &amp; Spaceflight Simulator</title>
 <style>
 :root{--bg:#060a16;--glass:rgba(22,28,52,.42);--edge:rgba(200,210,255,.16);--accent:#9ad7ff;--lav:#bba9ff;--pink:#ffb8d9;--warn:#ffd28a;--crit:#ff9aa8;--ok:#8ff0c8;--tx:#e4ebff;--mut:#9aa6c8;color-scheme:dark}
@@ -1208,6 +1211,436 @@ body.xo #xp{transform:none;opacity:1;pointer-events:auto}#xp .xl{color:var(--mut
     gap: 5px;
   }
 }
+
+/* ==========================================================================
+   MOBILE EXPERIENCE UPGRADE — ISOLATED STYLES FOR TOUCH / MOBILE SCREENS
+   (Desktop styles remain 100% untouched)
+   ========================================================================== */
+
+/* Fullscreen Toggle Button (Mobile Top-Right) */
+#btn-mobile-fs-toggle {
+  display: none;
+  position: fixed;
+  top: calc(10px + env(safe-area-inset-top, 0px));
+  right: calc(14px + env(safe-area-inset-right, 0px));
+  z-index: 99998;
+  background: rgba(10, 20, 36, 0.78);
+  border: 1px solid rgba(79, 209, 255, 0.45);
+  color: #7fe0ff;
+  border-radius: 999px;
+  padding: 5px 11px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
+  cursor: pointer;
+  align-items: center;
+  gap: 5px;
+  touch-action: manipulation;
+}
+#btn-mobile-fs-toggle:hover {
+  background: rgba(20, 40, 70, 0.9);
+  border-color: #4fd1ff;
+  color: #ffffff;
+}
+
+/* 1. Mobile Portrait Orientation Screen */
+#mobile-rotate-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 999999;
+  background: radial-gradient(circle at 50% 45%, #0d1b33 0%, #060b18 60%, #020409 100%);
+  color: #e4ebff;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: calc(24px + env(safe-area-inset-top, 0px)) calc(24px + env(safe-area-inset-right, 0px)) calc(24px + env(safe-area-inset-bottom, 0px)) calc(24px + env(safe-area-inset-left, 0px));
+  text-align: center;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.mro-stars-halo {
+  position: absolute;
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(79, 209, 255, 0.16) 0%, rgba(138, 92, 255, 0.08) 50%, transparent 75%);
+  filter: blur(20px);
+  pointer-events: none;
+  animation: mroGlowPulse 4s ease-in-out infinite alternate;
+}
+@keyframes mroGlowPulse {
+  0% { transform: scale(0.9); opacity: 0.6; }
+  100% { transform: scale(1.15); opacity: 1; }
+}
+
+.mro-anim-wrapper {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.mro-phone-outline {
+  width: 52px;
+  height: 94px;
+  border: 2.5px solid rgba(79, 209, 255, 0.9);
+  border-radius: 12px;
+  position: relative;
+  box-shadow: 0 0 24px rgba(79, 209, 255, 0.4), inset 0 0 14px rgba(79, 209, 255, 0.2);
+  background: rgba(10, 22, 42, 0.75);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  animation: mroPhoneRotate 3.2s cubic-bezier(0.45, 0, 0.25, 1) infinite;
+  transform-origin: center center;
+}
+@keyframes mroPhoneRotate {
+  0%, 18% {
+    transform: rotate(0deg);
+  }
+  48%, 78% {
+    transform: rotate(-90deg);
+  }
+  96%, 100% {
+    transform: rotate(0deg);
+  }
+}
+
+.mro-phone-notch {
+  position: absolute;
+  top: 4px;
+  width: 18px;
+  height: 3px;
+  border-radius: 2px;
+  background: rgba(79, 209, 255, 0.6);
+}
+
+.mro-phone-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+}
+.mro-planet-icon {
+  font-size: 20px;
+  filter: drop-shadow(0 0 8px #4fd1ff);
+  animation: mroFloat 2.4s ease-in-out infinite alternate;
+}
+@keyframes mroFloat {
+  0% { transform: translateY(-2px); }
+  100% { transform: translateY(2px); }
+}
+
+.mro-rotate-arrows {
+  position: absolute;
+  inset: -12px;
+  pointer-events: none;
+  animation: mroArrowSpin 3.2s linear infinite;
+  opacity: 0.85;
+}
+.mro-arrow-svg {
+  width: 100%;
+  height: 100%;
+}
+
+.mro-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: rgba(79, 209, 255, 0.12);
+  border: 1px solid rgba(79, 209, 255, 0.4);
+  color: #7fe0ff;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+  box-shadow: 0 0 16px rgba(79, 209, 255, 0.2);
+}
+
+.mro-title {
+  margin: 0 0 10px;
+  font-size: clamp(17px, 5vw, 22px);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: linear-gradient(90deg, #9ad7ff, #bba9ff, #ffb8d9);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  line-height: 1.35;
+  text-shadow: 0 0 20px rgba(154, 215, 255, 0.3);
+}
+
+.mro-sub {
+  margin: 0;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  color: #8da4be;
+  max-width: 320px;
+  line-height: 1.5;
+}
+
+/* Activate rotation overlay ONLY on mobile in portrait */
+@media screen and (orientation: portrait) and (hover: none) and (pointer: coarse),
+       screen and (max-width: 600px) and (orientation: portrait) {
+  #mobile-rotate-overlay.active {
+    display: flex !important;
+  }
+}
+
+/* 2. Virtual Joystick & Mobile Touch Layer (Free Roam Mode) */
+#mobile-touch-layer {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 99990;
+  pointer-events: none;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  box-sizing: border-box;
+}
+
+/* Only display touch layer when active in free roam */
+#mobile-touch-layer.active {
+  display: block !important;
+}
+
+/* Left & Right Interactive Touch Zones */
+.vjoy-zone {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  pointer-events: auto;
+  touch-action: none;
+}
+#vjoy-zone-left {
+  left: 0;
+  width: 48vw;
+}
+#vjoy-zone-right {
+  right: 0;
+  width: 48vw;
+}
+
+/* Dynamic Virtual Joystick Containers (Invisible until touched) */
+.vjoy-container {
+  position: absolute;
+  width: 130px;
+  height: 130px;
+  margin-left: -65px;
+  margin-top: -65px;
+  pointer-events: none;
+  opacity: 0;
+  transform: scale(0.85);
+  transition: opacity 0.15s ease-out, transform 0.15s ease-out;
+  z-index: 99992;
+}
+.vjoy-container.active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Joystick Base Ring */
+.vjoy-base {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(16, 32, 58, 0.72) 0%, rgba(8, 16, 32, 0.45) 70%, transparent 100%);
+  border: 1.5px solid rgba(79, 209, 255, 0.55);
+  box-shadow: 0 0 20px rgba(79, 209, 255, 0.35), inset 0 0 15px rgba(79, 209, 255, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.vjoy-ring {
+  position: absolute;
+  inset: 12px;
+  border-radius: 50%;
+  border: 1px dashed rgba(79, 209, 255, 0.3);
+  pointer-events: none;
+}
+
+/* Joystick Cardinal Direction Hints */
+.vjoy-arrow {
+  position: absolute;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: rgba(127, 224, 255, 0.75);
+  text-shadow: 0 0 5px rgba(79, 209, 255, 0.6);
+  pointer-events: none;
+}
+.vjoy-arr-up { top: 6px; }
+.vjoy-arr-down { bottom: 6px; }
+.vjoy-arr-left { left: 8px; }
+.vjoy-arr-right { right: 8px; }
+
+/* Joystick Thumb Knob */
+.vjoy-knob {
+  position: absolute;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #9ad7ff 0%, #3ca0ff 55%, #0f52ba 100%);
+  border: 2px solid #e0f4ff;
+  box-shadow: 0 0 16px rgba(79, 209, 255, 0.8), 0 4px 12px rgba(0, 0, 0, 0.6);
+  pointer-events: none;
+  transform: translate(0px, 0px);
+  will-change: transform;
+}
+.vjoy-knob::after {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+}
+
+/* Mobile Quick Action Buttons (Thumb reach on right side) */
+#mobile-flight-actions {
+  position: absolute;
+  right: calc(14px + env(safe-area-inset-right, 0px));
+  bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 99995;
+  pointer-events: auto;
+}
+
+.mfa-btn {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(79, 209, 255, 0.5);
+  background: rgba(12, 22, 40, 0.82);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6), 0 0 12px rgba(79, 209, 255, 0.2);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: transform 0.1s, background 0.15s, border-color 0.15s, box-shadow 0.15s;
+  padding: 0;
+}
+.mfa-btn span {
+  font-size: 16px;
+  line-height: 1;
+}
+.mfa-btn small {
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+/* Boost Button */
+.mfa-boost {
+  border-color: rgba(255, 140, 40, 0.7);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6), 0 0 12px rgba(255, 140, 40, 0.35);
+  color: #ffb87a;
+}
+.mfa-boost:active, .mfa-boost.active {
+  background: rgba(255, 120, 30, 0.4);
+  border-color: #ffaa55;
+  transform: scale(0.92);
+  box-shadow: 0 0 20px rgba(255, 140, 40, 0.8);
+}
+
+/* Brake Button */
+.mfa-brake {
+  border-color: rgba(255, 60, 80, 0.75);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6), 0 0 12px rgba(255, 60, 80, 0.4);
+  color: #ff99aa;
+}
+.mfa-brake:active, .mfa-brake.active {
+  background: rgba(255, 40, 70, 0.45);
+  border-color: #ff5577;
+  transform: scale(0.92);
+  box-shadow: 0 0 22px rgba(255, 60, 80, 0.85);
+}
+
+/* Recenter / Level Button */
+.mfa-recenter {
+  border-color: rgba(120, 210, 255, 0.5);
+  color: #9ad7ff;
+}
+.mfa-recenter:active, .mfa-recenter.active {
+  background: rgba(79, 209, 255, 0.35);
+  transform: scale(0.92);
+}
+
+/* Responsive adjustments for mobile landscape gameplay */
+@media screen and (max-height: 550px) and (orientation: landscape),
+       screen and (max-width: 900px) and (orientation: landscape) {
+  #top {
+    padding: 3px 8px !important;
+    gap: 3px !important;
+    max-width: 92vw !important;
+  }
+  .hud-row {
+    gap: 4px !important;
+  }
+  #top button, #top select {
+    font-size: 9.5px !important;
+    padding: 2px 6px !important;
+  }
+  #fr-hud {
+    max-height: 80vh !important;
+    overflow-y: auto !important;
+    padding: 8px 10px !important;
+    max-width: min(240px, 38vw) !important;
+  }
+  #fr-hud .fr-guide {
+    display: none; /* Hide lengthy keyboard text on mobile landscape to save screen space */
+  }
+  .mfa-btn {
+    width: 46px;
+    height: 46px;
+  }
+  .mfa-btn span {
+    font-size: 14px;
+  }
+  .mfa-btn small {
+    font-size: 7.5px;
+  }
+}
+
+/* DESKTOP ISOLATION SAFEGUARD: Hide all mobile overlays on fine pointer / desktop hover */
+@media screen and (hover: hover) and (pointer: fine) and (min-width: 1025px) {
+  #mobile-rotate-overlay,
+  #mobile-touch-layer,
+  #btn-mobile-fs-toggle {
+    display: none !important;
+  }
+}
 </style>
 <script>
 // Early Introduction Audio Preparation for SPACE EXPO
@@ -1320,6 +1753,33 @@ body.xo #xp{transform:none;opacity:1;pointer-events:auto}#xp .xl{color:var(--mut
 })();
 </script>
 </head><body>
+
+<!-- MOBILE FULLSCREEN TOGGLE BUTTON -->
+<button id="btn-mobile-fs-toggle" title="Toggle Fullscreen Game View">
+  <span>⛶</span> <span>FULLSCREEN</span>
+</button>
+
+<!-- MOBILE PORTRAIT ROTATION SCREEN -->
+<div id="mobile-rotate-overlay" aria-hidden="true">
+  <div class="mro-stars-halo"></div>
+  <div class="mro-anim-wrapper">
+    <div class="mro-phone-outline">
+      <div class="mro-phone-notch"></div>
+      <div class="mro-phone-screen">
+        <div class="mro-planet-icon">🪐</div>
+      </div>
+    </div>
+    <div class="mro-rotate-arrows">
+      <svg viewBox="0 0 100 100" class="mro-arrow-svg">
+        <path d="M 22,50 A 28,28 0 0,1 78,50" fill="none" stroke="#4fd1ff" stroke-width="2.5" stroke-dasharray="4,4" />
+        <polygon points="76,43 86,50 76,57" fill="#4fd1ff" />
+      </svg>
+    </div>
+  </div>
+  <div class="mro-badge">ORIENTATION LOCKED</div>
+  <h2 class="mro-title">ROTATE YOUR DEVICE TO LANDSCAPE</h2>
+  <p class="mro-sub">SPACE EXPO is an advanced 3D solar system simulator engineered for widescreen spaceflight.</p>
+</div>
 
 <!-- CINEMATIC HOMEPAGE OVERLAY -->
 <div id="homepage">
@@ -4552,7 +5012,7 @@ function setGameMode(modeName){
     FREE_ROAM.camInit = true;
     updateFreeRoamCamera(0.016);
     updateFreeRoamUI();
-    toast('FREE ROAM MODE ACTIVE — Pilot spacecraft freely with Arrow Keys', 1);
+    toast('FREE ROAM MODE ACTIVE — Pilot spacecraft freely with Arrow Keys', 1); if (window.MobileController) MobileController.syncFlightLayer();
   } else {
     // Normal Mode
     if(!FREE_ROAM.active) return;
@@ -4574,7 +5034,7 @@ function setGameMode(modeName){
     cam.up.set(0, 1, 0);
     mode = 'free';
     focus('earth');
-    toast('NORMAL MODE ACTIVE — Standard simulation & Scale Tour restored', 1);
+    toast('NORMAL MODE ACTIVE — Standard simulation & Scale Tour restored', 1); if (window.MobileController) MobileController.syncFlightLayer();
   }
 }
 
@@ -5703,17 +6163,134 @@ function isFRStandardArrowRight(e) {
   return ((e.key === 'ArrowRight' || e.code === 'ArrowRight' || e.key === 'd' || e.key === 'D' || e.code === 'KeyD') && e.location !== 3 && e.code !== 'Numpad6');
 }
 
-window.addEventListener('keydown', e => {
-  if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable) return;
+function emergencyBrake() {
+  if (typeof FREE_ROAM !== 'undefined' && FREE_ROAM.active) {
+    FREE_ROAM.speedLevel = 0;
+    FREE_ROAM.vel.set(0, 0, 0);
+    FREE_ROAM.bankAngle = 0;
+    FREE_ROAM.recentering = false;
+    FREE_ROAM.keys.up = false;
+    FREE_ROAM.keys.down = false;
+    FREE_ROAM.keys.left = false;
+    FREE_ROAM.keys.right = false;
+    FREE_ROAM.keys.numpad8 = false;
+    FREE_ROAM.keys.numpad2 = false;
+    FREE_ROAM.keys.numpad4 = false;
+    FREE_ROAM.keys.numpad6 = false;
+    FREE_ROAM.keys.numpad5 = false;
+    FREE_ROAM.keys.numpadUp = false;
+    FREE_ROAM.keys.numpadDown = false;
+    FREE_ROAM.keys.shift = false;
+    FREE_ROAM.keys.ctrl = false;
+    if (typeof updateFreeRoamUI === 'function') updateFreeRoamUI();
+    toast('EMERGENCY BRAKE — Full Stop (0 km/s)', 1);
+  } else if (typeof warp !== 'undefined') {
+    warp = warp ? 0 : 1;
+  }
+}
 
-  if (FREE_ROAM.active) {
-    // Immediate Brake on Spacebar
-    if (e.code === 'Space' || e.key === ' ') {
-      e.preventDefault();
-      FREE_ROAM.speedLevel = 0;
-      FREE_ROAM.vel.set(0, 0, 0);
-      FREE_ROAM.bankAngle = 0;
-      FREE_ROAM.recentering = false;
+// ==========================================================================
+// MOBILE EXPERIENCE CONTROLLER (Orientation, Fullscreen, Dual Virtual Joysticks)
+// ==========================================================================
+const MobileController = (() => {
+  let initialized = false;
+
+  // Touch tracking for dual virtual joysticks
+  let leftTouchId = null;
+  let rightTouchId = null;
+  const leftOrigin = { x: 0, y: 0 };
+  const rightOrigin = { x: 0, y: 0 };
+  const MAX_RADIUS = 48; // Max displacement in pixels
+  const DEAD_ZONE = 0.20; // 20% deadzone
+
+  let rotateOverlay = null;
+  let touchLayer = null;
+  let vjoyLeft = null;
+  let vjoyRight = null;
+  let knobLeft = null;
+  let knobRight = null;
+  let fsToggleBtn = null;
+
+  function detectMobile() {
+    const hasTouch = ('ontouchstart' in window || navigator.maxTouchPoints > 0);
+    const coarsePointer = window.matchMedia && window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+    const narrowScreen = window.innerWidth <= 1024;
+    return (hasTouch && (coarsePointer || narrowScreen)) || (narrowScreen && window.innerHeight < 600);
+  }
+
+  function checkOrientation() {
+    if (!rotateOverlay) rotateOverlay = document.getElementById('mobile-rotate-overlay');
+    if (!rotateOverlay) return;
+    const isPortrait = window.innerHeight > window.innerWidth;
+    const isMobile = detectMobile();
+    if (isMobile && isPortrait) {
+      rotateOverlay.classList.add('active');
+    } else {
+      rotateOverlay.classList.remove('active');
+    }
+  }
+
+  function requestFullscreenAndLandscape() {
+    if (!detectMobile()) return;
+    const de = document.documentElement;
+    const req = de.requestFullscreen || de.webkitRequestFullscreen || de.mozRequestFullScreen || de.msRequestFullscreen;
+    if (req && !document.fullscreenElement && !document.webkitFullscreenElement) {
+      try {
+        const p = req.call(de);
+        if (p && p.catch) p.catch(() => {});
+      } catch(e) {}
+    }
+    if (screen.orientation && typeof screen.orientation.lock === 'function') {
+      try { screen.orientation.lock('landscape').catch(() => {}); } catch(e) {}
+    } else if (screen.lockOrientation) {
+      try { screen.lockOrientation('landscape'); } catch(e) {}
+    }
+  }
+
+  function toggleFullscreen() {
+    const isFS = !!(document.fullscreenElement || document.webkitFullscreenElement);
+    if (!isFS) {
+      requestFullscreenAndLandscape();
+    } else {
+      const exitFS = document.exitFullscreen || document.webkitExitFullscreen || document.mozCancelFullScreen || document.msExitFullscreen;
+      if (exitFS) {
+        try { exitFS.call(document); } catch(e) {}
+      }
+    }
+    updateFsButtonState();
+  }
+
+  function updateFsButtonState() {
+    if (!fsToggleBtn) fsToggleBtn = document.getElementById('btn-mobile-fs-toggle');
+    if (!fsToggleBtn) return;
+    const isFS = !!(document.fullscreenElement || document.webkitFullscreenElement);
+    fsToggleBtn.innerHTML = isFS ? '<span>✕</span> <span>EXIT FS</span>' : '<span>⛶</span> <span>FULLSCREEN</span>';
+  }
+
+  function syncFlightLayer() {
+    if (!touchLayer) touchLayer = document.getElementById('mobile-touch-layer');
+    if (!touchLayer) return;
+    const isMobile = detectMobile();
+    if (fsToggleBtn) {
+      fsToggleBtn.style.display = (isMobile && typeof simStarted !== 'undefined' && simStarted) ? 'inline-flex' : 'none';
+    }
+    if (isMobile && typeof FREE_ROAM !== 'undefined' && FREE_ROAM.active) {
+      touchLayer.classList.add('active');
+    } else {
+      touchLayer.classList.remove('active');
+      releaseAllTouches();
+    }
+  }
+
+  function releaseAllTouches() {
+    leftTouchId = null;
+    rightTouchId = null;
+    if (vjoyLeft) vjoyLeft.classList.remove('active');
+    if (vjoyRight) vjoyRight.classList.remove('active');
+    if (knobLeft) knobLeft.style.transform = 'translate(0px, 0px)';
+    if (knobRight) knobRight.style.transform = 'translate(0px, 0px)';
+
+    if (typeof FREE_ROAM !== 'undefined') {
       FREE_ROAM.keys.up = false;
       FREE_ROAM.keys.down = false;
       FREE_ROAM.keys.left = false;
@@ -5722,11 +6299,308 @@ window.addEventListener('keydown', e => {
       FREE_ROAM.keys.numpad2 = false;
       FREE_ROAM.keys.numpad4 = false;
       FREE_ROAM.keys.numpad6 = false;
-      FREE_ROAM.keys.numpad5 = false;
       FREE_ROAM.keys.numpadUp = false;
       FREE_ROAM.keys.numpadDown = false;
-      updateFreeRoamUI();
-      toast('EMERGENCY BRAKE — Full Stop (0 km/s)', 1);
+      FREE_ROAM.keys.shift = false;
+      FREE_ROAM.keys.ctrl = false;
+      if (typeof updateFreeRoamUI === 'function') updateFreeRoamUI();
+    }
+  }
+
+  function applyLeftJoyMovement(nx, ny) {
+    if (typeof FREE_ROAM === 'undefined') return;
+    // Vertical: Up / Down
+    if (ny < -0.28) {
+      FREE_ROAM.keys.up = true;
+      FREE_ROAM.keys.down = false;
+    } else if (ny > 0.28) {
+      FREE_ROAM.keys.down = true;
+      FREE_ROAM.keys.up = false;
+    } else {
+      FREE_ROAM.keys.up = false;
+      FREE_ROAM.keys.down = false;
+    }
+
+    // Horizontal: Left / Right
+    if (nx < -0.28) {
+      FREE_ROAM.keys.left = true;
+      FREE_ROAM.keys.right = false;
+    } else if (nx > 0.28) {
+      FREE_ROAM.keys.right = true;
+      FREE_ROAM.keys.left = false;
+    } else {
+      FREE_ROAM.keys.left = false;
+      FREE_ROAM.keys.right = false;
+    }
+    if (typeof updateFreeRoamUI === 'function') updateFreeRoamUI();
+  }
+
+  function applyRightJoyAttitude(nx, ny) {
+    if (typeof FREE_ROAM === 'undefined') return;
+    // Vertical: Pitch Up (Numpad 8) / Pitch Down (Numpad 2)
+    if (ny < -0.28) {
+      FREE_ROAM.keys.numpad8 = true;
+      FREE_ROAM.keys.numpadUp = true;
+      FREE_ROAM.keys.numpad2 = false;
+      FREE_ROAM.keys.numpadDown = false;
+    } else if (ny > 0.28) {
+      FREE_ROAM.keys.numpad2 = true;
+      FREE_ROAM.keys.numpadDown = true;
+      FREE_ROAM.keys.numpad8 = false;
+      FREE_ROAM.keys.numpadUp = false;
+    } else {
+      FREE_ROAM.keys.numpad8 = false;
+      FREE_ROAM.keys.numpadUp = false;
+      FREE_ROAM.keys.numpad2 = false;
+      FREE_ROAM.keys.numpadDown = false;
+    }
+
+    // Horizontal: Bank Left (Numpad 4) / Bank Right (Numpad 6)
+    if (nx < -0.28) {
+      FREE_ROAM.keys.numpad4 = true;
+      FREE_ROAM.keys.numpad6 = false;
+    } else if (nx > 0.28) {
+      FREE_ROAM.keys.numpad6 = true;
+      FREE_ROAM.keys.numpad4 = false;
+    } else {
+      FREE_ROAM.keys.numpad4 = false;
+      FREE_ROAM.keys.numpad6 = false;
+    }
+    if (typeof updateFreeRoamUI === 'function') updateFreeRoamUI();
+  }
+
+  function handleTouchStart(e) {
+    if (typeof FREE_ROAM === 'undefined' || !FREE_ROAM.active) return;
+    const midX = window.innerWidth * 0.5;
+
+    for (let i = 0; i < e.changedTouches.length; i++) {
+      const t = e.changedTouches[i];
+      // Left Zone (Movement)
+      if (t.clientX < midX && leftTouchId === null) {
+        leftTouchId = t.identifier;
+        leftOrigin.x = t.clientX;
+        leftOrigin.y = t.clientY;
+        vjoyLeft.style.left = t.clientX + 'px';
+        vjoyLeft.style.top = t.clientY + 'px';
+        vjoyLeft.classList.add('active');
+        knobLeft.style.transform = 'translate(0px, 0px)';
+      }
+      // Right Zone (Attitude Bending)
+      else if (t.clientX >= midX && rightTouchId === null) {
+        // Prevent collision with action buttons in lower-right
+        const actionsEl = document.getElementById('mobile-flight-actions');
+        if (actionsEl) {
+          const rect = actionsEl.getBoundingClientRect();
+          if (t.clientX >= rect.left - 15 && t.clientY >= rect.top - 15) continue;
+        }
+        rightTouchId = t.identifier;
+        rightOrigin.x = t.clientX;
+        rightOrigin.y = t.clientY;
+        vjoyRight.style.left = t.clientX + 'px';
+        vjoyRight.style.top = t.clientY + 'px';
+        vjoyRight.classList.add('active');
+        knobRight.style.transform = 'translate(0px, 0px)';
+      }
+    }
+  }
+
+  function handleTouchMove(e) {
+    if (typeof FREE_ROAM === 'undefined' || !FREE_ROAM.active) return;
+
+    for (let i = 0; i < e.changedTouches.length; i++) {
+      const t = e.changedTouches[i];
+
+      // Update Left Joystick
+      if (t.identifier === leftTouchId) {
+        const dx = t.clientX - leftOrigin.x;
+        const dy = t.clientY - leftOrigin.y;
+        const dist = Math.hypot(dx, dy);
+        const clampedDist = Math.min(dist, MAX_RADIUS);
+        const angle = Math.atan2(dy, dx);
+        const kx = Math.cos(angle) * clampedDist;
+        const ky = Math.sin(angle) * clampedDist;
+        knobLeft.style.transform = 'translate(' + kx.toFixed(1) + 'px, ' + ky.toFixed(1) + 'px)';
+
+        if (dist >= MAX_RADIUS * DEAD_ZONE) {
+          applyLeftJoyMovement(kx / MAX_RADIUS, ky / MAX_RADIUS);
+        } else {
+          applyLeftJoyMovement(0, 0);
+        }
+      }
+
+      // Update Right Joystick
+      else if (t.identifier === rightTouchId) {
+        const dx = t.clientX - rightOrigin.x;
+        const dy = t.clientY - rightOrigin.y;
+        const dist = Math.hypot(dx, dy);
+        const clampedDist = Math.min(dist, MAX_RADIUS);
+        const angle = Math.atan2(dy, dx);
+        const kx = Math.cos(angle) * clampedDist;
+        const ky = Math.sin(angle) * clampedDist;
+        knobRight.style.transform = 'translate(' + kx.toFixed(1) + 'px, ' + ky.toFixed(1) + 'px)';
+
+        if (dist >= MAX_RADIUS * DEAD_ZONE) {
+          applyRightJoyAttitude(kx / MAX_RADIUS, ky / MAX_RADIUS);
+        } else {
+          applyRightJoyAttitude(0, 0);
+        }
+      }
+    }
+  }
+
+  function handleTouchEnd(e) {
+    for (let i = 0; i < e.changedTouches.length; i++) {
+      const t = e.changedTouches[i];
+      if (t.identifier === leftTouchId) {
+        leftTouchId = null;
+        if (vjoyLeft) vjoyLeft.classList.remove('active');
+        if (knobLeft) knobLeft.style.transform = 'translate(0px, 0px)';
+        applyLeftJoyMovement(0, 0);
+      } else if (t.identifier === rightTouchId) {
+        rightTouchId = null;
+        if (vjoyRight) vjoyRight.classList.remove('active');
+        if (knobRight) knobRight.style.transform = 'translate(0px, 0px)';
+        applyRightJoyAttitude(0, 0);
+      }
+    }
+  }
+
+  function init() {
+    if (initialized) return;
+    initialized = true;
+
+    rotateOverlay = document.getElementById('mobile-rotate-overlay');
+    touchLayer = document.getElementById('mobile-touch-layer');
+    vjoyLeft = document.getElementById('vjoy-left');
+    vjoyRight = document.getElementById('vjoy-right');
+    knobLeft = document.getElementById('vjoy-left-knob');
+    knobRight = document.getElementById('vjoy-right-knob');
+    fsToggleBtn = document.getElementById('btn-mobile-fs-toggle');
+
+    if (fsToggleBtn) {
+      fsToggleBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        toggleFullscreen();
+      });
+    }
+
+    // Emergency Brake Button
+    const brakeBtn = document.getElementById('btn-mobile-brake');
+    if (brakeBtn) {
+      const triggerBrake = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        brakeBtn.classList.add('active');
+        setTimeout(() => brakeBtn.classList.remove('active'), 200);
+        emergencyBrake();
+      };
+      brakeBtn.addEventListener('touchstart', triggerBrake, { passive: false });
+      brakeBtn.addEventListener('click', triggerBrake);
+    }
+
+    // Maximum Boost / Thrust Button
+    const boostBtn = document.getElementById('btn-mobile-boost');
+    if (boostBtn) {
+      const startBoost = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        boostBtn.classList.add('active');
+        if (typeof FREE_ROAM !== 'undefined') {
+          FREE_ROAM.keys.up = true;
+          FREE_ROAM.keys.shift = true;
+          updateFreeRoamUI();
+        }
+      };
+      const stopBoost = (e) => {
+        e.preventDefault();
+        boostBtn.classList.remove('active');
+        if (typeof FREE_ROAM !== 'undefined') {
+          FREE_ROAM.keys.shift = false;
+          if (leftTouchId === null) FREE_ROAM.keys.up = false;
+          updateFreeRoamUI();
+        }
+      };
+      boostBtn.addEventListener('touchstart', startBoost, { passive: false });
+      boostBtn.addEventListener('touchend', stopBoost, { passive: false });
+      boostBtn.addEventListener('touchcancel', stopBoost, { passive: false });
+      boostBtn.addEventListener('mousedown', startBoost);
+      boostBtn.addEventListener('mouseup', stopBoost);
+      boostBtn.addEventListener('mouseleave', stopBoost);
+    }
+
+    // Level Flight Attitude (Numpad 5) Button
+    const recenterBtn = document.getElementById('btn-mobile-recenter');
+    if (recenterBtn) {
+      const triggerRecenter = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        recenterBtn.classList.add('active');
+        setTimeout(() => recenterBtn.classList.remove('active'), 250);
+        if (typeof FREE_ROAM !== 'undefined') {
+          FREE_ROAM.keys.numpad5 = true;
+          FREE_ROAM.recentering = true;
+          updateFreeRoamUI();
+        }
+      };
+      recenterBtn.addEventListener('touchstart', triggerRecenter, { passive: false });
+      recenterBtn.addEventListener('click', triggerRecenter);
+    }
+
+    // Touch event listeners for the dynamic joysticks layer
+    if (touchLayer) {
+      touchLayer.addEventListener('touchstart', handleTouchStart, { passive: false });
+      window.addEventListener('touchmove', handleTouchMove, { passive: false });
+      window.addEventListener('touchend', handleTouchEnd, { passive: false });
+      window.addEventListener('touchcancel', handleTouchEnd, { passive: false });
+    }
+
+    // Global cancellation and orientation events
+    window.addEventListener('resize', () => {
+      checkOrientation();
+      syncFlightLayer();
+    });
+    window.addEventListener('orientationchange', () => {
+      setTimeout(() => {
+        checkOrientation();
+        syncFlightLayer();
+      }, 150);
+    });
+    window.addEventListener('blur', releaseAllTouches);
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) releaseAllTouches();
+    });
+    document.addEventListener('fullscreenchange', updateFsButtonState);
+    document.addEventListener('webkitfullscreenchange', updateFsButtonState);
+
+    // Initial orientation check
+    checkOrientation();
+  }
+
+  return {
+    init,
+    checkOrientation,
+    requestFullscreenAndLandscape,
+    toggleFullscreen,
+    syncFlightLayer,
+    releaseAllTouches,
+    detectMobile,
+    applyLeftJoyMovement,
+    applyRightJoyAttitude,
+    isLeftActive: () => leftTouchId !== null,
+    isRightActive: () => rightTouchId !== null
+  };
+})();
+window.MobileController = MobileController;
+window.emergencyBrake = emergencyBrake;
+
+window.addEventListener('keydown', e => {
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable) return;
+
+  if (FREE_ROAM.active) {
+    // Immediate Brake on Spacebar
+    if (e.code === 'Space' || e.key === ' ') {
+      e.preventDefault();
+      emergencyBrake();
       return;
     }
 
@@ -5858,6 +6732,7 @@ let simStarted = false;
 function launchSimulator() {
   if (simStarted) return;
   simStarted = true;
+  if (window.MobileController) { MobileController.requestFullscreenAndLandscape(); MobileController.syncFlightLayer(); }
   const hp = $('#homepage');
   if (hp) {
     const vid = $('#hp-bg-video');
@@ -5913,7 +6788,10 @@ if (window.__launchRequested) {
   } catch(e) {}
   launchSimulator();
 }
+if (window.MobileController) MobileController.init();
 window.__spaceExpo = {
+  MobileController,
+  emergencyBrake,
   B, by, MU, AUKM, MU_EARTH, MU_MOON, MU_MARS,
   calc, evalOpt, launchMission, abortMission,
   DSP, FREE_ROAM, TOUR,
@@ -5986,6 +6864,56 @@ addEventListener('error',e=>toast('Error: '+e.message));addEventListener('unhand
       <span>🎵</span> <span>View Audio Credits &amp; Sources</span>
     </button>
 
+</div>
+
+<!-- MOBILE TOUCH LAYER & VIRTUAL JOYSTICKS (FREE ROAM MODE) -->
+<div id="mobile-touch-layer" aria-hidden="true">
+  <!-- Touch zones -->
+  <div id="vjoy-zone-left" class="vjoy-zone"></div>
+  <div id="vjoy-zone-right" class="vjoy-zone"></div>
+
+  <!-- Left Dynamic Virtual Joystick (Movement: W, S, A, D) -->
+  <div id="vjoy-left" class="vjoy-container">
+    <div class="vjoy-base">
+      <div class="vjoy-ring"></div>
+      <div class="vjoy-arrow vjoy-arr-up">▲ W</div>
+      <div class="vjoy-arrow vjoy-arr-down">▼ S</div>
+      <div class="vjoy-arrow vjoy-arr-left">◀ A</div>
+      <div class="vjoy-arrow vjoy-arr-right">▶ D</div>
+      <div class="vjoy-knob" id="vjoy-left-knob"></div>
+    </div>
+  </div>
+
+  <!-- Right Dynamic Virtual Joystick (Spacecraft Bending: Numpad 8, 2, 4, 6) -->
+  <div id="vjoy-right" class="vjoy-container">
+    <div class="vjoy-base">
+      <div class="vjoy-ring"></div>
+      <div class="vjoy-arrow vjoy-arr-up">▲ PITCH UP</div>
+      <div class="vjoy-arrow vjoy-arr-down">▼ PITCH DN</div>
+      <div class="vjoy-arrow vjoy-arr-left">◀ BANK L</div>
+      <div class="vjoy-arrow vjoy-arr-right">▶ BANK R</div>
+      <div class="vjoy-knob" id="vjoy-right-knob"></div>
+    </div>
+  </div>
+
+  <!-- Mobile Flight Action Buttons (Right Thumb) -->
+  <div id="mobile-flight-actions">
+    <!-- Level Flight Attitude (Numpad 5) -->
+    <button id="btn-mobile-recenter" class="mfa-btn mfa-recenter" title="Level Attitude (Numpad 5)">
+      <span>⚖️</span>
+      <small>LEVEL</small>
+    </button>
+    <!-- Maximum Boost / Thrust (Shift + Up) -->
+    <button id="btn-mobile-boost" class="mfa-btn mfa-boost" title="Maximum Boost Thrust (Shift + W)">
+      <span>🔥</span>
+      <small>BOOST</small>
+    </button>
+    <!-- Emergency Brake Button (Spacebar) -->
+    <button id="btn-mobile-brake" class="mfa-btn mfa-brake" title="Emergency Brake (Spacebar)">
+      <span>🛑</span>
+      <small>BRAKE</small>
+    </button>
+  </div>
 </div>
 
 </body></html>
