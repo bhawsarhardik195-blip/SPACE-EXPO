@@ -1410,7 +1410,7 @@ body.xo #xp{transform:none;opacity:1;pointer-events:auto}#xp .xl{color:var(--mut
   position: fixed;
   inset: 0;
   z-index: 99990;
-  pointer-events: none;
+  pointer-events: none !important; /* CRITICAL: Central screen and canvas completely interactive */
   touch-action: none;
   user-select: none;
   -webkit-user-select: none;
@@ -1422,39 +1422,52 @@ body.xo #xp{transform:none;opacity:1;pointer-events:auto}#xp .xl{color:var(--mut
   display: block !important;
 }
 
-/* Left & Right Interactive Touch Zones */
+/* Left & Right Interactive Touch Zones (Fixed Bottom Corner Thumbpads) */
 .vjoy-zone {
   position: absolute;
-  top: 0;
   bottom: 0;
+  border-radius: 28px;
   pointer-events: auto;
   touch-action: none;
+  -webkit-touch-callout: none;
+  user-select: none;
+  -webkit-user-select: none;
+  background: transparent;
 }
 #vjoy-zone-left {
   left: 0;
-  width: 48vw;
+  width: min(200px, 32vw);
+  height: min(200px, 52vh);
 }
 #vjoy-zone-right {
-  right: 0;
-  width: 48vw;
+  right: calc(100px + env(safe-area-inset-right, 0px));
+  width: min(160px, 24vw);
+  height: min(200px, 50vh);
 }
 
-/* Dynamic Virtual Joystick Containers (Invisible until touched) */
+/* Fixed Virtual Joystick Base Rings (Anchored to designated bottom corners) */
 .vjoy-container {
   position: absolute;
-  width: 130px;
-  height: 130px;
-  margin-left: -65px;
-  margin-top: -65px;
+  width: 120px;
+  height: 120px;
   pointer-events: none;
   opacity: 0;
-  transform: scale(0.85);
-  transition: opacity 0.15s ease-out, transform 0.15s ease-out;
+  transform: scale(0.92);
+  transition: opacity 0.16s ease-out, transform 0.16s ease-out;
   z-index: 99992;
 }
 .vjoy-container.active {
   opacity: 1;
   transform: scale(1);
+}
+
+#vjoy-left {
+  left: calc(28px + env(safe-area-inset-left, 0px));
+  bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+}
+#vjoy-right {
+  right: calc(96px + env(safe-area-inset-right, 0px));
+  bottom: calc(24px + env(safe-area-inset-bottom, 0px));
 }
 
 /* Joystick Base Ring */
@@ -1499,8 +1512,8 @@ body.xo #xp{transform:none;opacity:1;pointer-events:auto}#xp .xl{color:var(--mut
 /* Joystick Thumb Knob */
 .vjoy-knob {
   position: absolute;
-  width: 52px;
-  height: 52px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   background: radial-gradient(circle at 35% 35%, #9ad7ff 0%, #3ca0ff 55%, #0f52ba 100%);
   border: 2px solid #e0f4ff;
@@ -1512,9 +1525,33 @@ body.xo #xp{transform:none;opacity:1;pointer-events:auto}#xp .xl{color:var(--mut
 .vjoy-knob::after {
   content: "";
   position: absolute;
-  inset: 8px;
+  inset: 7px;
   border-radius: 50%;
   border: 1px solid rgba(255, 255, 255, 0.45);
+}
+
+/* DEADSHOT.io-Style Long-Press & Interaction Restrictions during Gameplay */
+body, #c, #homepage, #mobile-touch-layer, .vjoy-zone, .vjoy-container, .vjoy-base, .vjoy-knob, .mfa-btn, #btn-mobile-fs-toggle, #mobile-rotate-overlay, #fr-hud {
+  -webkit-touch-callout: none !important;
+  -webkit-user-select: none !important;
+  -khtml-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+  -webkit-user-drag: none !important;
+}
+
+img, video {
+  -webkit-touch-callout: none !important;
+  -webkit-user-select: none !important;
+  user-select: none !important;
+  -webkit-user-drag: none !important;
+  pointer-events: none;
+}
+
+input, select, textarea {
+  -webkit-user-select: text !important;
+  user-select: text !important;
 }
 
 /* Mobile Quick Action Buttons (Thumb reach on right side) */
@@ -2716,10 +2753,13 @@ const AudioManager = {
   // PHASES 8-11 — CELESTIAL SCIENTIFIC EXPLANATIONS & INTELLIGENT NARRATION
   speakCelestial(id) {
     this.stopVoice();
-    const body = by && by[id] ? by[id] : { n: id.toUpperCase() };
+    const byMap = (typeof by !== 'undefined') ? by : (typeof window !== 'undefined' && (window.by || (window.__spaceExpo && window.__spaceExpo.by)));
+    const body = byMap && byMap[id] ? byMap[id] : { n: (id || '').toUpperCase() };
+    const parentDesc = (body.p && byMap && byMap[body.p]) ? (" orbiting " + byMap[body.p].n) : "";
+    const fmt = typeof f === 'function' ? f : ((v, d) => (v != null ? Number(v).toFixed(d || 0) : '—'));
     const script = CELESTIAL_SCRIPTS[id] || 
-      (body.n + " is a " + (body.c || 'celestial body') + (body.p && by[body.p] ? " orbiting " + by[body.p].n : "") + 
-      ". It has a mean radius of " + f(body.R, 0) + " kilometers, with surface gravity of " + f(body.g, 2) + " meters per second squared.");
+      (body.n + " is a " + (body.c || 'celestial body') + parentDesc + 
+      ". It has a mean radius of " + fmt(body.R, 0) + " kilometers, with surface gravity of " + fmt(body.g, 2) + " meters per second squared.");
 
     if (!this.narrationEnabled || this.muted) {
       this.updateNarrationUI(body.n, false, script);
@@ -2973,7 +3013,7 @@ B.push(
 {id:'enceladus',n:'Enceladus',c:'Icy moon',p:'saturn',R:252.1,M:1.08e20,g:.113,rot:32.9,tilt:0,a:238020,e:.0047,P:1.37,H:2.1,col:'#f2f6f8',mc:0,T:[32,75,145],atm:{H2O:91,CO2:4,N2:5},storm:'Water-ice geysers from the south pole',safe:'Tiny gravity; plume flythrough is survivable',risk:0,sr:2.7},
 {id:'triton',n:'Triton',c:'Icy moon',p:'neptune',R:1353.4,M:2.14e22,g:.779,rot:141,tilt:0,a:354759,e:.0002,P:5.877,H:-1.2,col:'#d4c9c4',mc:0,T:[34,38,44],atm:{N2:99.9,CH4:.1},storm:'Nitrogen geysers',safe:'Coldest known surface, about 38 K',risk:1,sr:3},
 {id:'charon',n:'Charon',c:'Icy moon',p:'pluto',R:606,M:1.586e21,g:.288,rot:153.3,tilt:0,a:19591,e:.0002,P:6.387,H:1,col:'#9a9088',mc:0,T:[40,53,60],atm:{Exosphere:100},storm:'None',safe:'Tidally locked to Pluto',risk:0,sr:2.8});
-const by={};B.forEach(b=>by[b.id]=b);
+const by={};B.forEach(b=>by[b.id]=b); window.by=by;
 for(const b of B){for(const k of['id','n','R','M','col'])if(b[k]==null)throw Error('Bad body '+b.id);if(b.p&&!by[b.p])throw Error('Unknown parent '+b.p);if(b.e>=1)throw Error('e>=1 '+b.id)}
 // ---- MATH
 function kep(M,e){M=((M%6.2831853)+6.2831853)%6.2831853;let E=e<.8?M:Math.PI;for(let i=0;i<30;i++){const d=(E-e*Math.sin(E)-M)/(1-e*Math.cos(E));E-=d;if(Math.abs(d)<1e-9)break}return E}
@@ -6200,8 +6240,8 @@ const MobileController = (() => {
   let rightTouchId = null;
   const leftOrigin = { x: 0, y: 0 };
   const rightOrigin = { x: 0, y: 0 };
-  const MAX_RADIUS = 48; // Max displacement in pixels
-  const DEAD_ZONE = 0.20; // 20% deadzone
+  const MAX_RADIUS = 46; // Max knob displacement
+  const DEAD_ZONE = 0.18; // 18% deadzone
 
   let rotateOverlay = null;
   let touchLayer = null;
@@ -6210,6 +6250,8 @@ const MobileController = (() => {
   let knobLeft = null;
   let knobRight = null;
   let fsToggleBtn = null;
+  let zoneLeft = null;
+  let zoneRight = null;
 
   function detectMobile() {
     const hasTouch = ('ontouchstart' in window || navigator.maxTouchPoints > 0);
@@ -6276,10 +6318,28 @@ const MobileController = (() => {
     }
     if (isMobile && typeof FREE_ROAM !== 'undefined' && FREE_ROAM.active) {
       touchLayer.classList.add('active');
+      updateLeftOrigin();
+      updateRightOrigin();
     } else {
       touchLayer.classList.remove('active');
       releaseAllTouches();
     }
+  }
+
+  function updateLeftOrigin() {
+    if (!vjoyLeft) vjoyLeft = document.getElementById('vjoy-left');
+    if (!vjoyLeft) return;
+    const rect = vjoyLeft.getBoundingClientRect();
+    leftOrigin.x = rect.left + rect.width * 0.5;
+    leftOrigin.y = rect.top + rect.height * 0.5;
+  }
+
+  function updateRightOrigin() {
+    if (!vjoyRight) vjoyRight = document.getElementById('vjoy-right');
+    if (!vjoyRight) return;
+    const rect = vjoyRight.getBoundingClientRect();
+    rightOrigin.x = rect.left + rect.width * 0.5;
+    rightOrigin.y = rect.top + rect.height * 0.5;
   }
 
   function releaseAllTouches() {
@@ -6369,81 +6429,77 @@ const MobileController = (() => {
     if (typeof updateFreeRoamUI === 'function') updateFreeRoamUI();
   }
 
-  function handleTouchStart(e) {
-    if (typeof FREE_ROAM === 'undefined' || !FREE_ROAM.active) return;
-    const midX = window.innerWidth * 0.5;
+  function updateLeftKnob(clientX, clientY) {
+    const dx = clientX - leftOrigin.x;
+    const dy = clientY - leftOrigin.y;
+    const dist = Math.hypot(dx, dy);
+    const clampedDist = Math.min(dist, MAX_RADIUS);
+    const angle = Math.atan2(dy, dx);
+    const kx = Math.cos(angle) * clampedDist;
+    const ky = Math.sin(angle) * clampedDist;
+    if (knobLeft) knobLeft.style.transform = 'translate(' + kx.toFixed(1) + 'px, ' + ky.toFixed(1) + 'px)';
 
-    for (let i = 0; i < e.changedTouches.length; i++) {
-      const t = e.changedTouches[i];
-      // Left Zone (Movement)
-      if (t.clientX < midX && leftTouchId === null) {
-        leftTouchId = t.identifier;
-        leftOrigin.x = t.clientX;
-        leftOrigin.y = t.clientY;
-        vjoyLeft.style.left = t.clientX + 'px';
-        vjoyLeft.style.top = t.clientY + 'px';
-        vjoyLeft.classList.add('active');
-        knobLeft.style.transform = 'translate(0px, 0px)';
-      }
-      // Right Zone (Attitude Bending)
-      else if (t.clientX >= midX && rightTouchId === null) {
-        // Prevent collision with action buttons in lower-right
-        const actionsEl = document.getElementById('mobile-flight-actions');
-        if (actionsEl) {
-          const rect = actionsEl.getBoundingClientRect();
-          if (t.clientX >= rect.left - 15 && t.clientY >= rect.top - 15) continue;
-        }
-        rightTouchId = t.identifier;
-        rightOrigin.x = t.clientX;
-        rightOrigin.y = t.clientY;
-        vjoyRight.style.left = t.clientX + 'px';
-        vjoyRight.style.top = t.clientY + 'px';
-        vjoyRight.classList.add('active');
-        knobRight.style.transform = 'translate(0px, 0px)';
-      }
+    if (dist >= MAX_RADIUS * DEAD_ZONE) {
+      applyLeftJoyMovement(kx / MAX_RADIUS, ky / MAX_RADIUS);
+    } else {
+      applyLeftJoyMovement(0, 0);
     }
   }
 
-  function handleTouchMove(e) {
+  function updateRightKnob(clientX, clientY) {
+    const dx = clientX - rightOrigin.x;
+    const dy = clientY - rightOrigin.y;
+    const dist = Math.hypot(dx, dy);
+    const clampedDist = Math.min(dist, MAX_RADIUS);
+    const angle = Math.atan2(dy, dx);
+    const kx = Math.cos(angle) * clampedDist;
+    const ky = Math.sin(angle) * clampedDist;
+    if (knobRight) knobRight.style.transform = 'translate(' + kx.toFixed(1) + 'px, ' + ky.toFixed(1) + 'px)';
+
+    if (dist >= MAX_RADIUS * DEAD_ZONE) {
+      applyRightJoyAttitude(kx / MAX_RADIUS, ky / MAX_RADIUS);
+    } else {
+      applyRightJoyAttitude(0, 0);
+    }
+  }
+
+  function handleLeftZoneStart(e) {
     if (typeof FREE_ROAM === 'undefined' || !FREE_ROAM.active) return;
+    if (leftTouchId !== null) return;
+    e.preventDefault();
+    e.stopPropagation();
+
+    updateLeftOrigin();
+    const t = e.changedTouches[0];
+    leftTouchId = t.identifier;
+    if (vjoyLeft) vjoyLeft.classList.add('active');
+    updateLeftKnob(t.clientX, t.clientY);
+  }
+
+  function handleRightZoneStart(e) {
+    if (typeof FREE_ROAM === 'undefined' || !FREE_ROAM.active) return;
+    if (rightTouchId !== null) return;
+    e.preventDefault();
+    e.stopPropagation();
+
+    updateRightOrigin();
+    const t = e.changedTouches[0];
+    rightTouchId = t.identifier;
+    if (vjoyRight) vjoyRight.classList.add('active');
+    updateRightKnob(t.clientX, t.clientY);
+  }
+
+  function handleTouchMove(e) {
+    if (leftTouchId === null && rightTouchId === null) return;
 
     for (let i = 0; i < e.changedTouches.length; i++) {
       const t = e.changedTouches[i];
-
-      // Update Left Joystick
       if (t.identifier === leftTouchId) {
-        const dx = t.clientX - leftOrigin.x;
-        const dy = t.clientY - leftOrigin.y;
-        const dist = Math.hypot(dx, dy);
-        const clampedDist = Math.min(dist, MAX_RADIUS);
-        const angle = Math.atan2(dy, dx);
-        const kx = Math.cos(angle) * clampedDist;
-        const ky = Math.sin(angle) * clampedDist;
-        knobLeft.style.transform = 'translate(' + kx.toFixed(1) + 'px, ' + ky.toFixed(1) + 'px)';
-
-        if (dist >= MAX_RADIUS * DEAD_ZONE) {
-          applyLeftJoyMovement(kx / MAX_RADIUS, ky / MAX_RADIUS);
-        } else {
-          applyLeftJoyMovement(0, 0);
-        }
-      }
-
-      // Update Right Joystick
-      else if (t.identifier === rightTouchId) {
-        const dx = t.clientX - rightOrigin.x;
-        const dy = t.clientY - rightOrigin.y;
-        const dist = Math.hypot(dx, dy);
-        const clampedDist = Math.min(dist, MAX_RADIUS);
-        const angle = Math.atan2(dy, dx);
-        const kx = Math.cos(angle) * clampedDist;
-        const ky = Math.sin(angle) * clampedDist;
-        knobRight.style.transform = 'translate(' + kx.toFixed(1) + 'px, ' + ky.toFixed(1) + 'px)';
-
-        if (dist >= MAX_RADIUS * DEAD_ZONE) {
-          applyRightJoyAttitude(kx / MAX_RADIUS, ky / MAX_RADIUS);
-        } else {
-          applyRightJoyAttitude(0, 0);
-        }
+        e.preventDefault();
+        updateLeftKnob(t.clientX, t.clientY);
+      } else if (t.identifier === rightTouchId) {
+        e.preventDefault();
+        updateRightKnob(t.clientX, t.clientY);
       }
     }
   }
@@ -6476,6 +6532,8 @@ const MobileController = (() => {
     knobLeft = document.getElementById('vjoy-left-knob');
     knobRight = document.getElementById('vjoy-right-knob');
     fsToggleBtn = document.getElementById('btn-mobile-fs-toggle');
+    zoneLeft = document.getElementById('vjoy-zone-left');
+    zoneRight = document.getElementById('vjoy-zone-right');
 
     if (fsToggleBtn) {
       fsToggleBtn.addEventListener('click', (e) => {
@@ -6546,13 +6604,23 @@ const MobileController = (() => {
       recenterBtn.addEventListener('click', triggerRecenter);
     }
 
-    // Touch event listeners for the dynamic joysticks layer
-    if (touchLayer) {
-      touchLayer.addEventListener('touchstart', handleTouchStart, { passive: false });
-      window.addEventListener('touchmove', handleTouchMove, { passive: false });
-      window.addEventListener('touchend', handleTouchEnd, { passive: false });
-      window.addEventListener('touchcancel', handleTouchEnd, { passive: false });
+    // Attach touch listeners directly to designated thumbpad zones
+    if (zoneLeft) {
+      zoneLeft.addEventListener('touchstart', handleLeftZoneStart, { passive: false });
     }
+    if (zoneRight) {
+      zoneRight.addEventListener('touchstart', handleRightZoneStart, { passive: false });
+    }
+
+    window.addEventListener('touchmove', handleTouchMove, { passive: false });
+    window.addEventListener('touchend', handleTouchEnd, { passive: false });
+    window.addEventListener('touchcancel', handleTouchEnd, { passive: false });
+
+    // Long-press context menu prevention during active gameplay
+    window.addEventListener('contextmenu', (e) => {
+      if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable)) return;
+      e.preventDefault();
+    }, { passive: false });
 
     // Global cancellation and orientation events
     window.addEventListener('resize', () => {
@@ -6587,7 +6655,11 @@ const MobileController = (() => {
     applyLeftJoyMovement,
     applyRightJoyAttitude,
     isLeftActive: () => leftTouchId !== null,
-    isRightActive: () => rightTouchId !== null
+    isRightActive: () => rightTouchId !== null,
+    getLeftOrigin: () => ({ ...leftOrigin }),
+    getRightOrigin: () => ({ ...rightOrigin }),
+    handleLeftZoneStart,
+    handleRightZoneStart
   };
 })();
 window.MobileController = MobileController;
