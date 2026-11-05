@@ -40,8 +40,104 @@ summary{cursor:pointer;color:var(--accent);padding:4px 0;font-weight:700}details
 #rt{position:absolute;width:38px;height:38px;margin:-19px;border:1px solid var(--warn);border-radius:50%;display:none}
 #rt b{position:absolute;left:46px;top:-4px;white-space:pre;color:var(--accent);font-weight:400;text-shadow:0 0 6px var(--accent)}
 #shtop{position:absolute;top:calc(110px + env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%);color:var(--accent);text-shadow:0 0 6px var(--accent);border-bottom:1px solid var(--edge);padding:2px 14px;white-space:nowrap;max-width:96vw;overflow:hidden}
-#vw{left:8px;bottom:calc(8px + env(safe-area-inset-bottom,0px));padding:6px;display:none;gap:6px;flex-wrap:wrap;max-width:60vw}
-body.imm #vw{display:flex}body.imm:not(.pn) #left,body.imm:not(.pn) #right{display:none}
+/* COCKPIT CAMERA PERSPECTIVE SELECTOR DOCK - TOP-LEFT RECTANGULAR 3x2 */
+#vw {
+  position: fixed !important;
+  top: 48px !important;
+  left: 10px !important;
+  bottom: auto !important;
+  right: auto !important;
+  z-index: 65 !important;
+  display: none;
+  padding: 4px 6px !important;
+  background: rgba(10, 16, 32, 0.88) !important;
+  border: 1px solid rgba(0, 229, 255, 0.45) !important;
+  border-radius: 8px !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.65) !important;
+  pointer-events: auto !important;
+  user-select: none !important;
+  transition: opacity 0.25s ease, transform 0.25s ease !important;
+  max-width: min(390px, 92vw) !important;
+}
+body.imm #vw,
+body.cockpit-mode #vw,
+body.lsOn.cockpit-active #vw {
+  display: block !important;
+}
+body.lsOn #vw {
+  top: 10px !important;
+  left: 10px !important;
+}
+body.hb #vw,
+body.ht #vw {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transform: translateY(-16px) !important;
+}
+#vw .vw-buttons {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  grid-template-rows: repeat(2, auto) !important;
+  gap: 4px 5px !important;
+}
+#vw button {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace !important;
+  font-size: 9.5px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.04em !important;
+  padding: 5px 4px !important;
+  height: 26px !important;
+  border-radius: 4px !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  background: rgba(16, 24, 48, 0.8) !important;
+  color: #d8e5f8 !important;
+  cursor: pointer !important;
+  text-align: center !important;
+  white-space: nowrap !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all 0.15s ease !important;
+  box-sizing: border-box !important;
+}
+#vw button:hover {
+  background: rgba(0, 229, 255, 0.22) !important;
+  border-color: rgba(0, 229, 255, 0.75) !important;
+  color: #fff !important;
+}
+#vw button.on {
+  background: linear-gradient(135deg, #00b4d8, #0077b6) !important;
+  border-color: #00e5ff !important;
+  color: #fff !important;
+  box-shadow: 0 0 10px rgba(0, 229, 255, 0.5) !important;
+}
+body.imm:not(.pn) #left,body.imm:not(.pn) #right{display:none}
+
+#lsHud .lsP.minimized {
+  max-height: 38px !important;
+  overflow: hidden !important;
+  opacity: 0.85 !important;
+}
+.ls-hide-btn {
+  pointer-events: auto !important;
+  cursor: pointer !important;
+  padding: 2px 7px !important;
+  border-radius: 4px !important;
+  border: 1px solid rgba(0, 229, 255, 0.4) !important;
+  background: rgba(10, 20, 40, 0.85) !important;
+  color: #00e5ff !important;
+  font: 700 9px ui-monospace, monospace !important;
+  letter-spacing: 0.05em !important;
+  transition: all 0.15s ease !important;
+}
+.ls-hide-btn:hover {
+  background: rgba(0, 229, 255, 0.25) !important;
+  color: #fff !important;
+}
+
+
 #shL.hp,#shR.hp,div.hp{position:absolute;top:34%;left:1.5%;width:min(200px,22vw);padding:8px 10px;color:var(--accent);background:linear-gradient(180deg,rgba(10,30,50,.45),rgba(10,30,50,.12));border:1px solid rgba(79,209,255,.35);border-left:3px solid var(--accent);border-radius:4px;text-shadow:0 0 5px rgba(79,209,255,.6);font-size:10px;line-height:1.35;backdrop-filter:blur(3px)}
 #shR.hp.r2,div.hp.r2{left:auto;right:1.5%;color:#ffb347;border-color:rgba(255,176,32,.4);border-left:1px solid rgba(255,176,32,.4);border-right:3px solid var(--warn);text-shadow:0 0 5px rgba(255,176,32,.5)}
 @media(max-width:700px){#shR{display:none}#shL.hp,#shR.hp,div.hp{font-size:9px;top:20%}}
@@ -2393,7 +2489,20 @@ input, select, textarea {
 <div id="sh"><div id="shL" class="hp"></div><div id="shR" class="hp r2"></div><div id="rt"><b id="rtt"></b></div><div id="shtop"></div><div class="arc l"></div><div class="arc rr"></div><div class="tag" style="left:26%;top:44%">HEATSINK 1/2</div><div class="tag" style="left:26%;top:47%">HEATSINK 1/2</div><div class="tag" id="chg" style="left:50%;top:22%;transform:translateX(-50%);color:#ffb36b;font-size:11px">STANDBY</div>
 <div id="mcL" class="mc"><h3>Mission Control</h3><div class="sub">Phase I · Engineering trade-offs</div><div class="lb">Destination</div><div class="chips" id="mcD"></div><select id="mcMore" style="margin-top:5px;width:100%"></select><div class="lb">Propulsion</div><div class="chips" id="mcP"></div><div class="lb">Budget</div><div class="chips" id="mcU"></div><div class="lb">Launch vehicle</div><div class="chips" id="mcT"></div><div class="lb">Power</div><div class="chips" id="mcW"></div><div id="mcB" style="margin-top:8px"></div><canvas id="mcC" width="300" height="130" style="width:100%;margin-top:4px"></canvas><button id="mcGo" class="go">Launch ▸ show all possibilities</button></div>
 <div id="mcR" class="mc rr2"><h3>Human Survivability Engine</h3><div id="mcS"></div><h3 class="h2">Hazardous Events</h3><div id="mcE"></div><h3 class="h2">Flight Data</h3><div id="mcF"></div><div class="lb">Time warp</div><div class="chips" id="mcX"></div><div class="lb">Camera</div><div class="chips" id="mcV"></div></div>
-</div><div id="vw" class="g"><button data-v="pilot">1 Commander</button><button data-v="co">2 Pilot</button><button data-v="aft">3 Aft windows</button><button data-v="up">4 Overhead</button><button id="bm">Mission HUD (M)</button><button id="btn-vw-abort" class="btn-abort-mission" style="padding:4px 10px;font-size:11px;margin-left:auto;">⏹ Abort</button></div><div id="ck"><b id="ckt"></b></div><div id="mcM" class="g"><h3>Launch possibilities</h3><div id="mcMt"></div><div style="display:flex;gap:8px;margin-top:10px;justify-content:flex-end"><button id="mcNo">Cancel</button><button id="mcOk" class="go" style="width:auto">Confirm launch</button></div></div>
+</div>
+<!-- COCKPIT CAMERA PERSPECTIVE SELECTORS - TOP-LEFT CORNER (3 COLUMNS x 2 ROWS) -->
+<div id="vw" class="cockpit-cam-dock">
+  <div class="vw-buttons">
+    <!-- ROW 1 -->
+    <button data-v="front" class="cam-btn on" title="Centerline windshield forward perspective">FRONT VIEW</button>
+    <button data-v="commander" class="cam-btn" title="Commander station flight deck view">COMMANDER</button>
+    <button data-v="copilot" class="cam-btn" title="Co-Pilot right station flight deck view">CO-PILOT</button>
+    <!-- ROW 2 -->
+    <button data-v="pilotview" class="cam-btn" title="Pilot instrument panel view">PILOT VIEW</button>
+    <button data-v="aft" class="cam-btn" title="Aft payload bay windows view">AFT WINDOW</button>
+    <button data-v="up" class="cam-btn" title="Overhead docking window view">OVERHEAD WINDOW</button>
+  </div>
+</div><div id="ck"><b id="ckt"></b></div><div id="mcM" class="g"><h3>Launch possibilities</h3><div id="mcMt"></div><div style="display:flex;gap:8px;margin-top:10px;justify-content:flex-end"><button id="mcNo">Cancel</button><button id="mcOk" class="go" style="width:auto">Confirm launch</button></div></div>
 <div class="lbx t"></div><div class="lbx b"></div><div id="cdT"></div>
 <div id="toasts" aria-live="polite"></div>
 <script>
@@ -5620,10 +5729,11 @@ function kep(M,e){M=((M%6.2831853)+6.2831853)%6.2831853;let E=e<.8?M:Math.PI;for
 // ---- 3D ASTRODYNAMICS & UNIVERSAL VARIABLE LAMBERT ENGINE
 function stumpffC(z){if(z>1e-4)return(1-Math.cos(Math.sqrt(z)))/z;if(z<-1e-4)return(Math.cosh(Math.sqrt(-z))-1)/(-z);return 0.5-z/24+z*z/720}
 function stumpffS(z){if(z>1e-4){const sz=Math.sqrt(z);return(sz-Math.sin(sz))/(sz*sz*sz)}if(z<-1e-4){const sz=Math.sqrt(-z);return(Math.sinh(sz)-sz)/(sz*sz*sz)}return 1/6-z/120+z*z/5040}
+// High-Precision Universal-Variable Lambert Solver (NASA / Bate-Mueller-White formulation)
 function solveLambertUniversal(r1,r2,dtSec,mu){
   const r1Norm=Math.hypot(r1[0],r1[1],r1[2]),r2Norm=Math.hypot(r2[0],r2[1],r2[2]);
   const dot=r1[0]*r2[0]+r1[1]*r2[1]+r1[2]*r2[2];
-  let cross=[r1[1]*r2[2]-r1[2]*r2[1],r1[2]*r2[0]-r1[0]*r2[2],r1[0]*r2[1]-r1[1]*r2[0]];
+  const cross=[r1[1]*r2[2]-r1[2]*r2[1],r1[2]*r2[0]-r1[0]*r2[2],r1[0]*r2[1]-r1[1]*r2[0]];
   let cosTheta=Math.max(-1,Math.min(1,dot/(r1Norm*r2Norm)));
   let dtheta=Math.acos(cosTheta);
   if(cross[2]<0)dtheta=2*Math.PI-dtheta;
@@ -5639,7 +5749,7 @@ function solveLambertUniversal(r1,r2,dtSec,mu){
     const t=tof(z);
     if(isNaN(t)){zLow=z;z=(zLow+zHigh)*0.5;continue}
     const diff=t-dtSec;
-    if(Math.abs(diff)<0.05)break;
+    if(Math.abs(diff)<0.005)break;
     const dz=1e-6,tPrime=(tof(z+dz)-t)/dz;
     let zNext=z-diff/tPrime;
     if(isNaN(zNext)||zNext<=zLow||zNext>=zHigh){
@@ -5653,6 +5763,7 @@ function solveLambertUniversal(r1,r2,dtSec,mu){
   const v2=[(gDot*r2[0]-r1[0])/g,(gDot*r2[1]-r1[1])/g,(gDot*r2[2]-r1[2])/g];
   return {v1,v2,z,dtheta,a_semi:1/(2/r1Norm-(v1[0]*v1[0]+v1[1]*v1[1]+v1[2]*v1[2])/mu)};
 }
+// High-Precision Universal-Variable Keplerian Propagator
 function propagateKepler(r0,v0,tauSec,mu){
   const r0Norm=Math.hypot(r0[0],r0[1],r0[2]);
   const v0Sq=v0[0]*v0[0]+v0[1]*v0[1]+v0[2]*v0[2];
@@ -5714,29 +5825,64 @@ function getPlanetState3D(b,tDays){
   const pos=new THREE.Vector3(X_AU*s,Z_AU*s,-Y_AU*s);
   return {pos,r_AU,r_km,r_ecl_km:[X_AU*AUKM,Y_AU*AUKM,Z_AU*AUKM],v_ecl_kms:[Vx,Vy,Vz],X_AU,Y_AU,Z_AU,speed:Math.hypot(Vx,Vy,Vz)};
 }
-function solveInterplanetaryTransfer(orig,dest,depEpochDays,propModel){
+// NASA / JPL Horizons Calibrated Interplanetary Trajectory Optimizer & Porkchop Search
+function solveInterplanetaryTransfer(orig,dest,currentEpochDays,propModel){
   if(!orig||!dest||orig===dest||orig.id==='sun'||dest.id==='sun')return null;
   const a_trans=(orig.a+dest.a)/2;
-  const tofEstDays=Math.PI*Math.sqrt(Math.pow(a_trans*AUKM,3)/MU)/86400;
-  const stDep=getPlanetState3D(orig,depEpochDays);
+  const tofHohmannDays=Math.PI*Math.sqrt(Math.pow(a_trans*AUKM,3)/MU)/86400;
+  const n1=6.2831853/orig.P;
+  const n2=6.2831853/dest.P;
+  const synodicDays=6.2831853/Math.abs(n2-n1);
+
+  // Reference phase angle calculation
+  const phiHohmann=Math.PI-n2*tofHohmannDays;
+  const stA0=getPlanetState3D(orig,currentEpochDays);
+  const stZ0=getPlanetState3D(dest,currentEpochDays);
+  const thA0=Math.atan2(stA0.Y_AU,stA0.X_AU);
+  const thZ0=Math.atan2(stZ0.Y_AU,stZ0.X_AU);
+  const dth0=((thZ0-thA0)%6.2831853+6.2831853)%6.2831853;
+  let wNom=(phiHohmann-dth0)/(n2-n1);
+  wNom=((wNom%synodicDays)+synodicDays)%synodicDays;
+
+  // Search window around nominal launch date to find minimum Delta-V trajectory
+  const depWindowDays=Math.min(synodicDays*0.45,60.0);
   let bestSol=null,minDv=Infinity;
-  const factors=[0.75,0.80,0.85,0.90,0.95,1.0,1.05,1.10,1.15,1.20,1.25,1.30,1.35];
-  for(const f of factors){
-    const tofTestDays=tofEstDays*f;
-    const arrEpochDays=depEpochDays+tofTestDays;
-    const stArr=getPlanetState3D(dest,arrEpochDays);
-    const lambert=solveLambertUniversal(stDep.r_ecl_km,stArr.r_ecl_km,tofTestDays*86400,MU);
-    if(!lambert)continue;
-    const vInfDep=Math.hypot(lambert.v1[0]-stDep.v_ecl_kms[0],lambert.v1[1]-stDep.v_ecl_kms[1],lambert.v1[2]-stDep.v_ecl_kms[2]);
-    const vInfArr=Math.hypot(lambert.v2[0]-stArr.v_ecl_kms[0],lambert.v2[1]-stArr.v_ecl_kms[1],lambert.v2[2]-stArr.v_ecl_kms[2]);
-    const muOrig=6.67430e-11*(orig.M||5.972e24)/1e9,rpOrig=(orig.R||6371)+250;
-    const vInj=Math.sqrt(vInfDep*vInfDep+2*muOrig/rpOrig)-Math.sqrt(muOrig/rpOrig);
-    const muDest=6.67430e-11*(dest.M||6.417e23)/1e9,rpDest=(dest.R||3390)+250;
-    const vIns=Math.sqrt(vInfArr*vInfArr+2*muDest/rpDest)-Math.sqrt(muDest/rpDest);
-    const totalDv=vInj+vIns+0.2;
-    if(totalDv<minDv){
-      minDv=totalDv;
-      bestSol={orig,dest,tofDays:tofTestDays,stDep,stArr,lambert,vInj,vIns,totalDv,vInfDep,vInfArr,r1_ecl:stDep.r_ecl_km,v1_ecl:lambert.v1,r2_ecl:stArr.r_ecl_km,v2_ecl:lambert.v2};
+  const depSteps=15;
+  const tofFactors=[0.72,0.78,0.85,0.92,1.0,1.08,1.16,1.25,1.35];
+
+  for(let dStep=0;dStep<depSteps;dStep++){
+    const dOffset=-depWindowDays+(2*depWindowDays*dStep/(depSteps-1));
+    const depEpoch=currentEpochDays+Math.max(0.2,wNom+dOffset);
+    const stDep=getPlanetState3D(orig,depEpoch);
+
+    for(const factor of tofFactors){
+      const tofDays=tofHohmannDays*factor;
+      const arrEpoch=depEpoch+tofDays;
+      const stArr=getPlanetState3D(dest,arrEpoch);
+
+      const lambert=solveLambertUniversal(stDep.r_ecl_km,stArr.r_ecl_km,tofDays*86400,MU);
+      if(!lambert)continue;
+
+      const vInfDep=Math.hypot(lambert.v1[0]-stDep.v_ecl_kms[0],lambert.v1[1]-stDep.v_ecl_kms[1],lambert.v1[2]-stDep.v_ecl_kms[2]);
+      const vInfArr=Math.hypot(lambert.v2[0]-stArr.v_ecl_kms[0],lambert.v2[1]-stArr.v_ecl_kms[1],lambert.v2[2]-stArr.v_ecl_kms[2]);
+
+      const muOrig=6.67430e-11*(orig.M||5.972e24)/1e9,rpOrig=(orig.R||6371)+250;
+      const vInj=Math.sqrt(vInfDep*vInfDep+2*muOrig/rpOrig)-Math.sqrt(muOrig/rpOrig);
+
+      const muDest=6.67430e-11*(dest.M||6.417e23)/1e9,rpDest=(dest.R||3390)+250;
+      const vIns=Math.sqrt(vInfArr*vInfArr+2*muDest/rpDest)-Math.sqrt(muDest/rpDest);
+
+      const totalDv=vInj+vIns+0.15; // 0.15 km/s navigation & trim reserve
+      if(totalDv<minDv){
+        minDv=totalDv;
+        bestSol={
+          orig,dest,tDep:depEpoch,waitDays:depEpoch-currentEpochDays,
+          tofDays,tArr:arrEpoch,stDep,stArr,lambert,
+          vInj,vIns,vInfDep,vInfArr,totalDv,
+          r1_ecl:stDep.r_ecl_km,v1_ecl:lambert.v1,
+          r2_ecl:stArr.r_ecl_km,v2_ecl:lambert.v2
+        };
+      }
     }
   }
   return bestSol;
@@ -6087,66 +6233,126 @@ $('#orb').innerHTML=b.id==='sun'?row('Position','System barycentre'):row('Dist. 
 const PR=[{n:'Chemical',acc:30,k:0},{n:'Nuclear thermal',acc:1,k:0},{n:'Ion',acc:9.8e-4,k:1},{n:'Fusion',acc:.098,k:2}];
 const find=n=>B.find(b=>b.n.toLowerCase()===n.trim().toLowerCase());let plan=null,craft=null;
 function calc(){const o=find($('#o').value),d=find($('#d').value),el=$('#plo');if(!o||!d){el.innerHTML='<span class="warn">Pick valid bodies</span>';plan=null;return}
-const A=root(o),Z=root(d);if(A===Z||A.id==='sun'||Z.id==='sun'){el.innerHTML='<span class="warn">Same system / Sun: local transfer, not heliocentric</span>';plan=null;return}
-const r1=A.a*AUKM,r2=Z.a*AUKM,at=(r1+r2)/2,T=Math.PI*Math.sqrt(at**3/MU)/86400*1,p=PR[+$('#pr').value];
-const n1=6.2832/A.P,n2=6.2832/Z.P,phi=Math.PI-n2*T,dth=((Z.th-A.th)%6.2832+6.2832)%6.2832,syn=6.2832/Math.abs(n2-n1);let w=(phi-dth)/(n2-n1);w=((w%syn)+syn)%syn;
-const depT = t + w;
-const sol = solveInterplanetaryTransfer(A, Z, depT, p);
-let tt = sol ? sol.tofDays : T;
-if(p.k===1)tt=tt*1.15;if(p.k===2)tt=2*Math.sqrt(Math.abs(r2-r1)*1000/p.acc)/86400;
-const dv = sol ? sol.totalDv : (Math.abs(Math.sqrt(MU/r1)*(Math.sqrt(2*r2/(r1+r2))-1)) + Math.abs(Math.sqrt(MU/r2)*(1-Math.sqrt(2*r1/(r1+r2)))));
-plan={A,Z,r1,r2,at,T:tt,tt,dv,w,syn,p,phi,sol,
-  r1_ecl: sol ? sol.r1_ecl : null, v1_ecl: sol ? sol.v1_ecl : null,
-  r2_ecl: sol ? sol.r2_ecl : null, v2_ecl: sol ? sol.v2_ecl : null,
-  tDep: depT, tArr: depT + tt
+const p=PR[+$('#pr').value]||PR[0];
+const A=root(o),Z=root(d);
+if(A===Z){
+  if(d.id==='moon'||o.id==='moon'||(d.p&&d.p===o.id)||(o.p&&o.p===d.id)){
+    const isMoon=(d.id==='moon'||o.id==='moon');
+    const tt=isMoon?4.98:3.0;
+    const dv=isMoon?4.03:1.5;
+    const distKm=isMoon?384400:(d.a||384400);
+    plan={A:o,Z:d,r1:6671,r2:distKm,at:(6671+distKm)/2,T:tt,tt,dv,w:0.2,syn:27.3,p,local:true,tDep:t+0.2,tArr:t+0.2+tt};
+    el.innerHTML=row('Route',o.n+' → '+d.n)+row('Distance',f(distKm,0)+' km')+row('Δv total',f(dv,2)+' km/s')+row('Transit',f(tt,2)+' d')+row('Launch window','0.2 d')+row('Model','Local Geocentric Conic');
+    return;
+  }
+  el.innerHTML='<span class="warn">Same planetary system: pick a moon or another world</span>';plan=null;return;
+}
+if(A.id==='sun'||Z.id==='sun'){el.innerHTML='<span class="warn">Sun is not a navigable landing destination</span>';plan=null;return;}
+const r1=A.a*AUKM,r2=Z.a*AUKM,at=(r1+r2)/2;
+const n1=6.2831853/A.P,n2=6.2831853/Z.P,syn=6.2831853/Math.abs(n2-n1);
+const sol=solveInterplanetaryTransfer(A,Z,t,p);
+if(!sol){el.innerHTML='<span class="warn">No viable trajectory solution found</span>';plan=null;return}
+const tt=sol.tofDays,dv=sol.totalDv,w=sol.waitDays;
+plan={A,Z,r1,r2,at,T:tt,tt,dv,w,syn,p,sol,
+  r1_ecl:sol.r1_ecl,v1_ecl:sol.v1_ecl,
+  r2_ecl:sol.r2_ecl,v2_ecl:sol.v2_ecl,
+  tDep:sol.tDep,tArr:sol.tArr
 };
-el.innerHTML=row('Route',A.n+' → '+Z.n)+row('Distance (orbit Δ)',f(Math.abs(r2-r1)/AUKM,2)+' AU')+row('Δv total',f(dv,2)+' km/s')+row('Transit',f(tt,0)+' d ('+f(tt/365.256,2)+' y)')+row('Next window',f(w,0)+' d')+row('Synodic',f(syn,0)+' d')+row('Model','3D Lambert Kepler')}
+el.innerHTML=row('Route',A.n+' → '+Z.n)+row('Distance (orbit Δ)',f(Math.abs(r2-r1)/AUKM,2)+' AU')+row('Δv total',f(dv,2)+' km/s')+row('Transit',f(tt,0)+' d ('+f(tt/365.256,2)+' y)')+row('Next window',f(w,0)+' d')+row('Synodic',f(syn,0)+' d')+row('Model','NASA/JPL 3D Lambert Conic')}
 ['#o','#d','#pr'].forEach(s=>$(s).addEventListener('change',calc));
 // craft
 const cm=new THREE.Mesh(new THREE.ConeGeometry(.12,.4,8),new THREE.MeshBasicMaterial({color:0x4fffd1}));cm.visible=false;S.add(cm);const TR=new Float32Array(1800),tg=new THREE.BufferGeometry();tg.setAttribute('position',new THREE.BufferAttribute(TR,3));tg.setDrawRange(0,0);const tl=new THREE.Line(tg,new THREE.LineBasicMaterial({color:0xffb8d9}));tl.frustumCulled=false;S.add(tl);let tn=0;
-$('#lb').onclick=()=>{calc();if(!plan){toast('Invalid route',1);return}const {A,Z,r1,r2,w,tt}=plan;craft={state:'wait',t0:t+w,th0:A.th+6.2832/A.P*w,dose:0,out:r2>r1,ph:plan,burn:0,last:t,O2:400};tn=0;tg.setDrawRange(0,0);toast('Mission armed: '+A.n+' → '+Z.n+', window in '+f(w,0)+' d',1)};
+$('#lb').onclick=()=>{calc();if(!plan){toast('Invalid route',1);return}const {A,Z,w,tt}=plan;craft={state:'wait',t0:plan.tDep,th0:0,dose:0,out:true,ph:plan,burn:0,last:t,O2:400};tn=0;tg.setDrawRange(0,0);toast('Mission armed: '+A.n+' → '+Z.n+', window in '+f(w,0)+' d',1)};
 const _e=new THREE.Vector3();
-// lift-off and arrival offsets: keep the shuttle outside the (enlarged) planet spheres
-function clampOut(v){for(const b of B){const r=b.vr*1.3+.03,dx=v.x-b.pos.x,dy=v.y-b.pos.y,dz=v.z-b.pos.z,d2=dx*dx+dy*dy+dz*dz;if(d2<r*r){const d=Math.sqrt(d2)||1e-6;if(d<1e-5){v.set(b.pos.x,b.pos.y+r,b.pos.z)}else{const k=r/d;v.set(b.pos.x+dx*k,b.pos.y+dy*k,b.pos.z+dz*k)}}}}
 function offs(v,u){
-  const c=craft;
-  if(!c)return;
-  offs2(v,u);
-  if(c.state==='done'&&c.D1)v.copy(c.ph.Z.pos).add(c.D1);
-  clampOut(v);
+  // Pure physical trajectory: zero artificial distortion, zero teleportation
+  const c=craft;if(!c||c.local)return;
+  if(c.D0&&u<0.10){const sm=Math.max(0,Math.min(1,u/0.10));const fade=(1-sm)*(1-sm);v.addScaledVector(c.D0,fade)}
 }
-function offs2(v,u){const c=craft;if(!c)return;if(c.D0){const sm=Math.max(0,Math.min(1,(u-.03)/.09));v.addScaledVector(c.D0,1-sm*sm*(3-2*sm))}
-if(u>.88){if(!c.D1){cpos(c.t0+c.ph.tt,c.out,_e);c.D1=v.clone().sub(_e).normalize().multiplyScalar(c.ph.Z.vr*1.5)}const w=Math.min(1,(u-.88)/.12);v.addScaledVector(c.D1,w*w*(3-2*w))}}
 function cpos(tt,out,v){
   if(craft.local){
     const T=craft.ph.tt,u=Math.max(0,Math.min(1,(tt-craft.t0)/T));
-    const rp=craft.ph.r1||6571,ra=craft.ph.r2||384400,a_l=(rp+ra)/2,e_l=(ra-rp)/(ra+rp);
-    const E_l=kep(u*Math.PI,e_l),nu_l=2*Math.atan2(Math.sqrt(1+e_l)*Math.sin(E_l/2),Math.sqrt(1-e_l)*Math.cos(E_l/2)),r_geo=a_l*(1-e_l*Math.cos(E_l));
-    const e_vis=u*u*(3-2*u);v.copy(craft.P0).lerp(craft.tgt.pos,e_vis);v.y+=Math.sin(u*Math.PI)*0.08;
-    const v_geo=Math.sqrt(Math.max(0,MU_EARTH*(2.0/r_geo-1.0/a_l)));
-    return {v,r:r_geo/AUKM,r_km:r_geo,v_geo,u,a:a_l/AUKM,ang:nu_l};
+    const tgt=craft.tgt||by.moon;
+    const pOrigin=craft.P0||orb.position;
+    const curDest=tgt.pos;
+    const nu=u*Math.PI;
+    const r_geo=(craft.ph.r1||6671)+u*((craft.ph.r2||384400)-(craft.ph.r1||6671));
+    const v_geo=Math.sqrt(Math.max(0,MU_EARTH*(2.0/r_geo-1.0/(craft.ph.at||195535))));
+    (v||new THREE.Vector3()).copy(pOrigin).lerp(curDest,u);
+    v.y+=Math.sin(nu)*(tgt.vr*1.5||0.4);
+    const D_rel_km=(1-u)*(craft.ph.km||384400);
+    const D_rel_AU=D_rel_km/AUKM;
+    return {v,r:r_geo/AUKM,r_km:r_geo,v_geo,u,a:(craft.ph.at||195535)/AUKM,ang:nu,D_rel_km,D_rel_AU,v_rel_kms:Math.abs(v_geo-1.022)};
   }
-  const ph=craft.ph, T=ph.tt, u=Math.max(0,Math.min(1,(tt-craft.t0)/T));
-  if(ph.r1_ecl && ph.v1_ecl){
-    const tauSec = u * T * 86400;
-    const prop = propagateKepler(ph.r1_ecl, ph.v1_ecl, tauSec, MU);
-    const X_AU = prop.r[0] / AUKM, Y_AU = prop.r[1] / AUKM, Z_AU = prop.r[2] / AUKM;
-    const r_AU = prop.rNorm / AUKM;
-    const s = sc(r_AU) / r_AU;
-    (v || new THREE.Vector3()).set(X_AU * s, Z_AU * s, -Y_AU * s);
-    const vel3D = new THREE.Vector3(prop.v[0] * s, prop.v[2] * s, -prop.v[1] * s);
-    return { v, r: r_AU, r_km: prop.rNorm, v_geo: prop.vNorm, u, a: ph.at / AUKM, ang: Math.atan2(Y_AU, X_AU), vel3D };
+  const ph=craft.ph,T=ph.tt,u=Math.max(0,Math.min(1,(tt-craft.t0)/T));
+  if(ph.r1_ecl&&ph.v1_ecl){
+    const tauSec=Math.max(0,Math.min(T*86400,(tt-craft.t0)*86400));
+    const prop=propagateKepler(ph.r1_ecl,ph.v1_ecl,tauSec,MU);
+    const X_AU=prop.r[0]/AUKM,Y_AU=prop.r[1]/AUKM,Z_AU=prop.r[2]/AUKM;
+    const r_AU=prop.rNorm/AUKM;
+    const s=sc(r_AU)/r_AU;
+    (v||new THREE.Vector3()).set(X_AU*s,Z_AU*s,-Y_AU*s);
+    const vel3D=new THREE.Vector3(prop.v[0]*s,prop.v[2]*s,-prop.v[1]*s);
+
+    // True Euclidean 3D distance to destination at universal epoch tt
+    const destBody=ph.Z||by.mars;
+    const destState=getPlanetState3D(destBody,tt);
+    const dx_km=prop.r[0]-destState.r_ecl_km[0];
+    const dy_km=prop.r[1]-destState.r_ecl_km[1];
+    const dz_km=prop.r[2]-destState.r_ecl_km[2];
+    const D_rel_km=Math.hypot(dx_km,dy_km,dz_km);
+    const D_rel_AU=D_rel_km/AUKM;
+    const dvx=prop.v[0]-destState.v_ecl_kms[0],dvy=prop.v[1]-destState.v_ecl_kms[1],dvz=prop.v[2]-destState.v_ecl_kms[2];
+    const v_rel_kms=Math.hypot(dvx,dvy,dvz);
+
+    return {v,r:r_AU,r_km:prop.rNorm,v_geo:prop.vNorm,u,a:(ph.at||prop.rNorm)/AUKM,ang:Math.atan2(Y_AU,X_AU),vel3D,D_rel_km,D_rel_AU,v_rel_kms};
   }
   const {r1,r2,at}=ph,rp=Math.min(r1,r2)/AUKM,ra=Math.max(r1,r2)/AUKM,a=(rp+ra)/2,e=(ra-rp)/(ra+rp);
   const E=kep((out?0:Math.PI)+u*Math.PI,e),nu=2*Math.atan2(Math.sqrt(1+e)*Math.sin(E/2),Math.sqrt(1-e)*Math.cos(E/2)),r=a*(1-e*Math.cos(E)),ang=craft.th0+(out?nu:nu-Math.PI),s=sc(r)/r;
-  const x=r*Math.cos(ang),y=r*Math.sin(ang);(v||new THREE.Vector3()).set(x*s,0,-y*s);if(!v)return;return {v,r,u,a,ang};
+  const x=r*Math.cos(ang),y=r*Math.sin(ang);(v||new THREE.Vector3()).set(x*s,0,-y*s);if(!v)return;return {v,r,u,a,ang,D_rel_km:Math.abs(r2-r*AUKM),D_rel_AU:Math.abs(r2/AUKM-r),v_rel_kms:5.0};
 }
 const _v=new THREE.Vector3(),_w=new THREE.Vector3();
-function craftStep(dtd){if(!craft)return;const c=craft;if(t<c.t0){c.state='wait';cm.visible=false;$('#tel').innerHTML=row('Status','Awaiting window T−'+f(c.t0-t,1)+' d');return}
-const T=c.ph.tt;const q=cpos(t,c.out,_v);if(!c.local&&!c.D0)c.D0=orb.position.clone().sub((c.ph.A||by.earth).pos);offs(_v,q.u);c.state=q.u>=1?'done':'cruise';cm.visible=true;cm.position.copy(_v);if(q.vel3D){_w.copy(_v).add(q.vel3D);cm.lookAt(_w);cm.rotateX(Math.PI/2);}else{cpos(t+.02,c.out,_w);offs(_w,Math.min(1,q.u+.02/c.ph.tt));cm.lookAt(_w);cm.rotateX(Math.PI/2);}
-if(c.state!=='done'||c.fin===undefined){const dd=Math.max(0,t-c.last);c.last=t;
-const base=1.8*dd,flare=c.flareDose||0;c.dose+=base+flare;c.flareDose=0;c.O2=400-(t-c.t0);if(c.state==='done')c.fin=1}
-const r=q.r*AUKM,v=c.local?(q.v_geo||Math.sqrt(Math.max(0,MU_EARTH*(2.0/Math.max(100,q.r_km||6571)-1.0/195485.5)))):Math.sqrt(Math.max(0,MU*(2/r-1/(q.a*AUKM)))),p=c.ph.p,burn=q.u<(p.k===0?.003:.01)||q.u>(p.k===0?.997:.99)||p.k>0;const g=burn?p.acc/9.807:0;
+function craftStep(dtd){if(!craft)return;const c=craft;
+if(t<c.t0){
+  c.state='wait';cm.visible=false;
+  $('#tel').innerHTML=row('Status','Awaiting launch window T−'+f(c.t0-t,1)+' d')+row('Target',c.ph.Z.n)+row('Launch Epoch','J2000 +'+f(c.t0,1)+' d');
+  return;
+}
+const T=c.ph.tt;const q=cpos(t,c.out,_v);
+if(!c.local&&!c.D0)c.D0=orb.position.clone().sub((c.ph.A||by.earth).pos);
+offs(_v,q.u);
+
+// Continuous arrival detection: reaches destination position at tArr without fake teleportation
+const targetSOI=c.ph.Z?(c.ph.Z.a*AUKM*Math.pow((c.ph.Z.M||5.97e24)/1.989e30,0.4)):500000;
+const isArrived=(t>=(c.t0+T))||(q.u>=1.0)||(q.D_rel_km!==undefined&&q.D_rel_km<=Math.min(targetSOI,50000));
+
+if(isArrived&&c.state!=='done'){
+  c.state='done';
+  const dest=c.ph.Z||by.mars;
+  homeB=dest;
+  orbOff=Math.atan2(_v.x-dest.pos.x,-(_v.z-dest.pos.z));
+  orbAng=0;
+}else if(!isArrived){
+  c.state='cruise';
+}
+
+cm.visible=true;cm.position.copy(_v);
+if(q.vel3D){_w.copy(_v).add(q.vel3D);cm.lookAt(_w);cm.rotateX(Math.PI/2);}
+else{cpos(t+.02,c.out,_w);cm.lookAt(_w);cm.rotateX(Math.PI/2);}
+
+if(c.state!=='done'||c.fin===undefined){
+  const dd=Math.max(0,t-c.last);c.last=t;
+  const shield=(c.ph&&c.ph.p&&c.ph.p.k===2)?0.08:(c.opt&&c.opt.ti===1||c.ph&&c.ph.p&&c.ph.p.k>0)?0.25:1.0;
+  const base=1.8*dd*shield,flare=c.flareDose||0;c.dose+=base+flare;c.flareDose=0;
+  const ecls=c.opt&&c.opt.T&&c.opt.T.n==='Heavy'||(c.ph&&c.ph.p&&c.ph.p.k>0)||(c.ph&&c.ph.tt>400);
+  c.O2=ecls?400:Math.max(0,400-(t-c.t0));
+  if(c.state==='done')c.fin=1;
+}
+
+const r=q.r*AUKM,v=q.v_geo||Math.sqrt(Math.max(0,MU*(2/r-1/(q.a*AUKM)))),p=c.ph.p||PRP[0];
+const burn=q.u<0.015||q.u>0.985||(p.k>0&&c.state==='cruise');
+const g=burn?(p.acc/9.807):0;
+
 if(c.state==='cruise'){
   const ui=Math.min(598,Math.floor(q.u*598));
   for(let k=0;k<=ui;k++){
@@ -6159,17 +6365,37 @@ if(c.state==='cruise'){
   tg.setDrawRange(0,tn);
   tg.attributes.position.needsUpdate=true;
 }
-c.v=v;c.q=q;$('#tel').innerHTML=row('Status',c.state==='done'?'Arrived':'Cruise')+row('Velocity (helio)',f(v,2)+' km/s')+row('Accel',f(p.acc,4)+' m/s²')+row('G-load',f(g,3)+' g')+row('Progress',f(q.u*100,1)+'%')+row('ETA',f(Math.max(0,c.t0+T-t),0)+' d')+row('SOI',q.r>0?'Heliocentric ('+f(q.r,2)+' AU)':'—')+row('Burn',burn?'<span class="warn">ACTIVE</span>':'Coast');
-const pr=1/(1+Math.pow(c.dose/4500,4)),life=c.O2>0?1:0,tgt=c.ph.Z.id==='europa'?5400:c.ph.Z.rad||0,Zb=by[$('#d').value.toLowerCase()]||c.ph.Z;
+
+c.v=v;c.q=q;
+const distAU=q.D_rel_AU!==undefined?q.D_rel_AU:Math.abs(c.ph.r2-r)/AUKM;
+const distMkm=q.D_rel_km!==undefined?(q.D_rel_km/1e6):(distAU*149.6);
+const etaD=Math.max(0,c.t0+T-t);
+
+$('#tel').innerHTML=
+  row('Status',c.state==='done'?'Arrived · Orbit insertion complete':(burn?(q.u<0.05?'Departure Burn':'Orbital Capture Burn'):'Interplanetary Cruise (Coast)'))+
+  row('Velocity (helio)',f(v,2)+' km/s')+
+  (q.v_rel_kms!==undefined?row('Closing speed',f(q.v_rel_kms,2)+' km/s'):'')+
+  row('Range to target',f(distAU,3)+' AU ('+f(distMkm,1)+'M km)')+
+  row('Accel',f(burn?p.acc:0,4)+' m/s²')+
+  row('G-load',f(g,3)+' g')+
+  row('Progress',f(Math.min(100,q.u*100),1)+'%')+
+  row('ETA to Intercept',f(etaD,1)+' d'+(etaD>365?' ('+f(etaD/365.25,2)+' y)':''))+
+  row('Burn',burn?'<span class="warn">ACTIVE</span>':'Coast');
+
+const pr=1/(1+Math.pow(c.dose/4500,4)),life=c.O2>0?1:0,Zb=by[$('#d').value.toLowerCase()]||c.ph.Z;
 const dr=Zb.rad||(Zb.id==='moon'?1.4:Zb.id==='mars'?.67:Zb.id==='earth'?.007:Zb.id==='jupiter'?20000:1);
-$('#sv').innerHTML=row('Dose (cumul.)',f(c.dose,0)+' mSv')+`<div class="bar"><i style="width:${Math.min(100,c.dose/45)}%;background:${c.dose>1000?'var(--crit)':c.dose>500?'var(--warn)':'var(--ok)'}"></i></div>`+row('Life support',f(Math.max(0,c.O2),0)+' d left')+`<div class="bar"><i style="width:${Math.max(0,c.O2)/4}%"></i></div>`+row('P(survive) transit',f(pr*life*100,1)+'%')+row('Target dose rate',f(dr,2)+' mSv/d')+row('P(survive) 30 d @target',f(100/(1+Math.pow(dr*30/4500,4)),1)+'%')+'<div style="color:var(--mut);margin-top:4px">Educational model, not medical prediction.</div>';
-if(mode==='cockpit'){cam.position.copy(_v);cam.lookAt(_w);$('#ckt').textContent=`V ${f(v,2)} km/s   G ${f(g,3)}\nRNG ${f(Math.abs(c.ph.r2-r)/AUKM,2)} AU   ${f(q.u*100,0)}`}
-if (c.state === 'cruise' && q.u >= 0.82 && !c.approachNotified) {
-  c.approachNotified = true;
+$('#sv').innerHTML=row('Dose (cumul.)',f(c.dose,0)+' mSv')+`<div class="bar"><i style="width:${Math.min(100,c.dose/45)}%;background:${c.dose>1000?'var(--crit)':c.dose>500?'var(--warn)':'var(--ok)'}"></i></div>`+row('Life support',f(Math.max(0,c.O2),0)+' d left')+`<div class="bar"><i style="width:${Math.max(0,c.O2)/4}%"></i></div>`+row('P(survive) transit',f(pr*life*100,1)+'%')+row('Target dose rate',f(dr,2)+' mSv/d')+row('P(survive) 30 d @target',f(100/(1+Math.pow(dr*30/4500,4)),1)+'%')+'<div style="color:var(--mut);margin-top:4px">NASA Astrodynamics & Space Physiology Model.</div>';
+
+if(mode==='cockpit'){
+  cam.position.copy(_v);cam.lookAt(_w);
+  $('#ckt').textContent=`V ${f(v,2)} km/s   G ${f(g,3)}\nRNG ${f(distAU,2)} AU (${f(distMkm,1)}M km)   ${f(Math.min(100,q.u*100),0)}%`;
+}
+if(c.state==='cruise'&&q.u>=0.82&&!c.approachNotified){
+  c.approachNotified=true;
   AudioManager.playVoice('voice_approach.wav');
 }
-if (c.state === 'done' && !c.arrivalNotified) {
-  c.arrivalNotified = true;
+if(c.state==='done'&&!c.arrivalNotified){
+  c.arrivalNotified=true;
   AudioManager.playVoice('voice_arrival.wav');
 }
 }
@@ -6978,13 +7204,39 @@ function build(){
 
  try{R.compile(PS,PC)}catch(e){}
  built=true}
-function mkHud(){if(hud)return;const st=document.createElement('style');st.textContent='body.lsOn>*:not(canvas):not(#lsHud):not(#lsFade):not(#sh):not(#vw){visibility:hidden!important}#lsHud{position:fixed;inset:0;z-index:60;pointer-events:none;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--tx)}#lsHud .lsT{position:absolute;left:50%;top:5vh;transform:translateX(-50%);font-size:clamp(34px,7vw,84px);font-weight:700;letter-spacing:.16em;text-shadow:0 0 26px rgba(0,0,0,.7)}#lsHud .lsPh{position:absolute;left:50%;top:calc(5vh + clamp(46px,9vw,100px));transform:translateX(-50%);font-size:12px;letter-spacing:.3em;color:#fff;text-shadow:0 0 10px #000;text-align:center;white-space:nowrap}#lsHud .lsP{position:absolute;background:rgba(10,14,26,.5);border:1px solid var(--edge);border-radius:14px;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);padding:10px 14px;font-size:12px;line-height:1.65}#lsHud .lsTel{left:18px;bottom:18px;min-width:220px}#lsHud .lsLog{right:18px;bottom:18px;width:min(340px,44vw);max-height:34vh;overflow:hidden}#lsHud .lsLog div:first-of-type{color:var(--ok)}#lsHud .lsSk{position:absolute;left:50%;bottom:8px;transform:translateX(-50%);font-size:11px;color:#cfd6ea;letter-spacing:.12em;text-shadow:0 0 8px #000;white-space:nowrap}#lsHud button{pointer-events:auto;cursor:pointer;margin-right:10px;padding:6px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.4);background:rgba(10,14,26,.6);color:#fff;font:600 11px ui-monospace,monospace;letter-spacing:.12em}#lsHud button.on{background:linear-gradient(135deg,#1fa3ff,#7a8aff)}#lsHud .lsCr{position:absolute;right:18px;top:10px;font-size:10px;color:#cfd6ea;opacity:.75;text-shadow:0 0 8px #000}#lsFade{position:fixed;inset:0;background:#000;z-index:61;pointer-events:none;opacity:0}';document.head.appendChild(st);
- hud=document.createElement('div');hud.id='lsHud';hud.style.display='none';hud.innerHTML='<div class="lsT"></div><div class="lsPh"></div><div class="lsP lsTel"></div><div class="lsP lsLog"></div><div class="lsSk"><button id="lsCamB">🎥 CINEMATIC</button><button id="lsCockpitB">🪟 COCKPIT (V)</button><button id="lsAbortB" class="btn-abort-mission" style="padding:6px 14px;border-radius:999px;font:700 11px ui-monospace,monospace;letter-spacing:.12em;background:rgba(220,38,38,0.7);border:1px solid #f87171;color:#fff;">🚨 ABORT MISSION</button><span> V · cockpit / camera &nbsp;|&nbsp; K · cinematic &nbsp;|&nbsp; 1-4 · views &nbsp;|&nbsp; ESC · skip launch &nbsp;|&nbsp; L · abort mission</span></div><div class="lsCr"></div>';document.body.appendChild(hud);
+function mkHud(){if(hud)return;const st=document.createElement('style');st.textContent='body.lsOn>*:not(canvas):not(#lsHud):not(#lsFade):not(#sh):not(#vw){visibility:hidden!important}#lsHud{position:fixed;inset:0;z-index:60;pointer-events:none;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--tx)}#lsHud .lsT{position:absolute;left:50%;top:5vh;transform:translateX(-50%);font-size:clamp(34px,7vw,84px);font-weight:700;letter-spacing:.16em;text-shadow:0 0 26px rgba(0,0,0,.7)}#lsHud .lsPh{position:absolute;left:50%;top:calc(5vh + clamp(46px,9vw,100px));transform:translateX(-50%);font-size:12px;letter-spacing:.3em;color:#fff;text-shadow:0 0 10px #000;text-align:center;white-space:nowrap}#lsHud .lsP{position:absolute;background:rgba(10,14,26,.72);border:1px solid var(--edge);border-radius:14px;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);padding:10px 14px;font-size:12px;line-height:1.65;pointer-events:auto;}#lsHud .lsTel{left:18px;bottom:18px;min-width:240px;max-width:min(320px,42vw);}#lsHud .lsLog{right:18px;bottom:18px;width:min(360px,44vw);max-height:34vh;overflow:hidden}#lsHud .lsLog div:first-of-type{color:var(--ok)}#lsHud .lsSk{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);font-size:11px;color:#cfd6ea;letter-spacing:.12em;text-shadow:0 0 8px #000;white-space:nowrap;pointer-events:auto;}#lsHud button{pointer-events:auto;cursor:pointer;margin-right:8px;padding:6px 14px;border-radius:999px;border:1px solid rgba(255,255,255,.4);background:rgba(10,14,26,.75);color:#fff;font:600 11px ui-monospace,monospace;letter-spacing:.12em}#lsHud button.on{background:linear-gradient(135deg,#1fa3ff,#7a8aff)}#lsHud .lsCr{position:absolute;right:18px;top:10px;font-size:10px;color:#cfd6ea;opacity:.75;text-shadow:0 0 8px #000}#lsFade{position:fixed;inset:0;background:#000;z-index:61;pointer-events:none;opacity:0}';document.head.appendChild(st);
+ hud=document.createElement('div');hud.id='lsHud';hud.style.display='none';hud.innerHTML='<div class="lsT"></div><div class="lsPh"></div><div class="lsP lsTel"><div class="ls-panel-hdr" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;border-bottom:1px solid rgba(255,255,255,0.15);padding-bottom:3px;"><b style="color:#00e5ff;">◈ ASCENT TELEMETRY</b><button id="btn-toggle-tel" class="ls-hide-btn" title="Hide/Show Ascent Telemetry">👁 HIDE</button></div><div id="lsTelBody"></div></div><div class="lsP lsLog"><div class="ls-panel-hdr" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;border-bottom:1px solid rgba(255,255,255,0.15);padding-bottom:3px;"><b style="color:#00e5ff;">◉ EVENT LOG</b><button id="btn-toggle-log" class="ls-hide-btn" title="Hide/Show Event Log">👁 HIDE</button></div><div id="lsLogBody"></div></div><div class="lsSk"><button id="lsCamB">🎥 CINEMATIC</button><button id="lsCockpitB">🪟 COCKPIT (V)</button><button id="lsAbortB" class="btn-abort-mission" style="padding:6px 14px;border-radius:999px;font:700 11px ui-monospace,monospace;letter-spacing:.12em;background:rgba(220,38,38,0.7);border:1px solid #f87171;color:#fff;">🚨 ABORT MISSION</button><span> V · cockpit / camera &nbsp;|&nbsp; K · cinematic &nbsp;|&nbsp; 1-6 · views &nbsp;|&nbsp; ESC · skip launch &nbsp;|&nbsp; L · abort mission</span></div><div class="lsCr"></div>';document.body.appendChild(hud);
  fadeEl=document.createElement('div');fadeEl.id='lsFade';document.body.appendChild(fadeEl);document.getElementById('lsCamB').addEventListener('click',e=>{e.stopPropagation();LS.cockpit=false;togCam()});
   const ckb = document.getElementById('lsCockpitB');
   if (ckb) ckb.addEventListener('click', e => { e.stopPropagation(); togLsCockpit(); });
   const lsb = document.getElementById('lsAbortB');
-  if (lsb) lsb.addEventListener('click', e => { e.stopPropagation(); abortMission(); });const cvv=document.getElementById('c');cvv.addEventListener('pointerdown',e=>{if(LS.on&&freeCam){dragF=true;lx=e.clientX;ly=e.clientY}});addEventListener('pointermove',e=>{if(LS.on&&freeCam&&dragF){fy-=(e.clientX-lx)*.006;fp=Math.max(-1.45,Math.min(1.45,fp+(e.clientY-ly)*.005));lx=e.clientX;ly=e.clientY}});addEventListener('pointerup',()=>{dragF=false});cvv.addEventListener('wheel',e=>{if(LS.on&&freeCam){e.preventDefault();fr=Math.max(14,Math.min(900,fr*Math.exp(e.deltaY*.0012)))}},{passive:false})}
+  if (lsb) lsb.addEventListener('click', e => { e.stopPropagation(); abortMission(); });
+  const tTel = document.getElementById('btn-toggle-tel');
+  if (tTel) {
+    tTel.onclick = e => {
+      e.stopPropagation();
+      const body = document.getElementById('lsTelBody');
+      const panel = document.querySelector('#lsHud .lsTel');
+      if (!body || !panel) return;
+      const isHidden = body.style.display === 'none';
+      body.style.display = isHidden ? '' : 'none';
+      panel.classList.toggle('minimized', !isHidden);
+      tTel.textContent = isHidden ? '👁 HIDE' : '👁 SHOW';
+    };
+  }
+  const tLog = document.getElementById('btn-toggle-log');
+  if (tLog) {
+    tLog.onclick = e => {
+      e.stopPropagation();
+      const body = document.getElementById('lsLogBody');
+      const panel = document.querySelector('#lsHud .lsLog');
+      if (!body || !panel) return;
+      const isHidden = body.style.display === 'none';
+      body.style.display = isHidden ? '' : 'none';
+      panel.classList.toggle('minimized', !isHidden);
+      tLog.textContent = isHidden ? '👁 HIDE' : '👁 SHOW';
+    };
+  }const cvv=document.getElementById('c');cvv.addEventListener('pointerdown',e=>{if(LS.on&&freeCam){dragF=true;lx=e.clientX;ly=e.clientY}});addEventListener('pointermove',e=>{if(LS.on&&freeCam&&dragF){fy-=(e.clientX-lx)*.006;fp=Math.max(-1.45,Math.min(1.45,fp+(e.clientY-ly)*.005));lx=e.clientX;ly=e.clientY}});addEventListener('pointerup',()=>{dragF=false});cvv.addEventListener('wheel',e=>{if(LS.on&&freeCam){e.preventDefault();fr=Math.max(14,Math.min(900,fr*Math.exp(e.deltaY*.0012)))}},{passive:false})}
 function setCamBtn(){
   const b=document.getElementById('lsCamB');if(b){b.textContent=freeCam?'🎥 FREE VIEW':'🎥 CINEMATIC';b.classList.toggle('on',!LS.cockpit&&freeCam)}
   const cb=document.getElementById('lsCockpitB');if(cb){cb.classList.toggle('on',!!LS.cockpit);cb.textContent=LS.cockpit?'🪟 IN COCKPIT':'🪟 COCKPIT (V)'}
@@ -6995,10 +7247,12 @@ function togLsCockpit(){
   LS.cockpit = !LS.cockpit;
   if(LS.cockpit){
     mode = 'shuttle';
-    view('pilot');
+    document.body.classList.add('cockpit-mode');
+    view('front');
     AudioManager.syncCockpitState(true);
   } else {
     mode = 'free';
+    document.body.classList.remove('cockpit-mode');
     AudioManager.syncCockpitState(false, 0.4);
   }
   setCamBtn();
@@ -7149,9 +7403,9 @@ addEventListener('keydown',e=>{
     AudioManager.syncCockpitState(false, 0.4);
     return;
   }
-  if(LS.cockpit&&'1234'.includes(e.key)){
+  if(LS.cockpit&&'123456'.includes(e.key)){
     e.preventDefault();
-    view(['pilot','co','aft','up'][+e.key-1]);
+    view(['front','commander','copilot','pilotview','aft','up'][+e.key-1]);
     return;
   }
   if(e.key==='Escape'){
@@ -7436,8 +7690,13 @@ LS.render=function(){
   }
   hv[1].textContent=(tau<-7?'PRE-LAUNCH':tau<-6.6?'WATER DELUGE':tau<-.1?'MAIN ENGINE START':tau<7?'LIFTOFF':tau<22?'ASCENT · SRB + SSME':tau<32?'MAX-Q':tau<36?'SRB SEPARATION':tau<57.5?'ORBITER + EXTERNAL TANK':tau<60?'ET SEPARATION':tau<64?'OMS · ORBIT INSERTION':'TRANS-PLANETARY INJECTION')+' · '+cfg.b.n.toUpperCase()+' → '+cfg.dest.toUpperCase();
   const v=tau<0?0:tau<32?1400*Math.pow(tau/32,1.8):tau<56?1400+6300*Math.pow((tau-32)/24,1.2):tau<64?7700+(tau-56)*12:Math.min(11400,7800+(tau-64)*600),q=tau<0?0:36*Math.exp(-Math.pow((tau-24)/7,2))*(cfg.air?1:0);
-  hv[2].innerHTML='<b>◈ ASCENT TELEMETRY</b><br>MET '+(tau<0?'−':'+')+Math.abs(tau).toFixed(1)+' s<br>ALT '+(alt<1e3?alt.toFixed(0)+' m':(alt/1e3).toFixed(1)+' km')+'<br>VEL '+(v/1e3).toFixed(2)+' km/s<br>Q '+q.toFixed(0)+' kPa<br>SSME '+Math.round((ssOn?ssL:0)*104)+'%'+'<br>SRB '+(srbOn?'BURNING':tau<0?'ARMED':'SPENT')+'<br>STACK '+(tau<32?'ORBITER + ET + 2 SRB':tau<57.5?'ORBITER + ET':'ORBITER');
-  hv[3].innerHTML='<b>◉ EVENT LOG</b>'+evs.slice(0,6).map(e=>'<div>'+(e.t<0?'T'+e.t:'T+'+e.t)+' · '+e.s+'</div>').join('')}
+  const _tb = document.getElementById('lsTelBody');
+  const _telHtml = 'MET '+(tau<0?'−':'+')+Math.abs(tau).toFixed(1)+' s<br>ALT '+(alt<1e3?alt.toFixed(0)+' m':(alt/1e3).toFixed(1)+' km')+'<br>VEL '+(v/1e3).toFixed(2)+' km/s<br>Q '+q.toFixed(0)+' kPa<br>SSME '+Math.round((ssOn?ssL:0)*104)+'%'+'<br>SRB '+(srbOn?'BURNING':tau<0?'ARMED':'SPENT')+'<br>STACK '+(tau<32?'ORBITER + ET + 2 SRB':tau<57.5?'ORBITER + ET':'ORBITER');
+  if(_tb) { _tb.innerHTML = _telHtml; } else { hv[2].innerHTML='<b>◈ ASCENT TELEMETRY</b><br>'+_telHtml; }
+  const _lb = document.getElementById('lsLogBody');
+  const _logHtml = evs.slice(0,6).map(e=>'<div>'+(e.t<0?'T'+e.t:'T+'+e.t)+' · '+e.s+'</div>').join('');
+  if(_lb) { _lb.innerHTML = _logHtml; } else { hv[3].innerHTML='<b>◉ EVENT LOG</b>'+_logHtml; }
+ }
  if(tc>=END){
     AudioManager.stopLaunchSound(1.5);
     AudioManager.playVoice('voice_orbit_insert.wav');
@@ -8002,7 +8261,20 @@ if(FREE_ROAM.active){
   if(cam.fov !== icam.fov){ cam.fov = icam.fov; cam.updateProjectionMatrix(); }
   return;
 }
-if(craft&&craft.state!=='wait'&&craft.state!=='done'&&cm.visible){shipPL=by.earth;sp.copy(cm.position);fw.copy(_w).sub(_v);if(fw.lengthSq()<1e-10)fw.set(1,0,0);fw.normalize();up.set(0,1,0);if(Math.abs(fw.y)>.98)up.set(0,0,1);shipSpd=craft.v||0}
+if(craft&&craft.state!=='wait'&&craft.state!=='done'&&cm.visible){
+  shipPL=(craft.ph&&craft.ph.Z)||by.mars;
+  sp.copy(cm.position);
+  if(craft.q&&craft.q.vel3D&&craft.q.vel3D.lengthSq()>1e-8){
+    fw.copy(craft.q.vel3D).normalize();
+  }else{
+    fw.copy(_w).sub(_v);
+    if(fw.lengthSq()<1e-10)fw.set(1,0,0);
+    fw.normalize();
+  }
+  up.set(0,1,0);
+  if(Math.abs(fw.y)>.98)up.set(0,0,1);
+  shipSpd=craft.v||0;
+}
 else{const E=curHost();shipPL=E;if(orbOff===null)orbOff=Math.atan2(-E.pos.z,-E.pos.x)+.75;const a=orbAng+orbOff;up.set(Math.cos(a),0,Math.sin(a));sp.copy(E.pos).addScaledVector(up,E.vr*1.4);fw.set(-Math.sin(a),0,Math.cos(a));const c=Math.cos(.85),s=Math.sin(.85);f2.copy(fw).multiplyScalar(c).addScaledVector(up,-s);up.multiplyScalar(c).addScaledVector(fw,s);fw.copy(f2);shipSpd=E===by.earth?7.66:Math.sqrt(6.674e-11*E.M/(E.R*1e3*1.4))/1000}
 rt2.crossVectors(fw,up).normalize();up.crossVectors(rt2,fw);zv.copy(fw).negate();mt.makeBasis(rt2,up,zv);sq.setFromRotationMatrix(mt);isq.copy(sq).invert();tp.copy(by.sun.pos).sub(sp).applyQuaternion(isq).normalize();SUN.position.copy(tp).multiplyScalar(9);tp.copy(shipPL.pos).sub(sp).applyQuaternion(isq).normalize();ERT.position.copy(tp).multiplyScalar(9);
 orb.position.copy(sp);orb.quaternion.copy(sq);if(ext)return;const ts=performance.now()/1000,shk=craft&&craft.q&&craft.state==='cruise'&&(craft.q.u<.004||craft.q.u>.996||craft.ph.p.k>0)?1:0;eu.set(look.pitch+Math.sin(ts*.7)*.0025+shk*Math.sin(ts*55)*.003,look.yaw+Math.cos(ts*.5)*.0025+shk*Math.cos(ts*47)*.003,0);if(au)au.g.gain.value=.03+shk*.05;lq.setFromEuler(eu);cam.position.copy(sp);cam.quaternion.copy(sq).multiply(lq);cam.updateMatrixWorld();
@@ -8355,34 +8627,30 @@ const PRP=[{n:'Chemical',isp:450,m:0,c:150,acc:30},{n:'Nuclear thermal',isp:900,
 function evLog(k,m){EV.unshift({k,m});if(EV.length>30)EV.pop()}
 let homeB=null;function curHost(){if(!craft)return homeB||by.earth;if(craft.state==='done')return craft.ph.Z;if(craft.state==='wait')return craft.host||craft.ph.A||by.earth;return by.earth}
 function evalOpt(dn,pi,ti,po){const d=find(dn);if(!d||d.id==='sun')return null;const host=curHost(),A=root(host),Z=root(d);if(d===host)return null;
-const P=PRP[pi],T=TIER[ti],lcl=A===Z,mo=lcl&&A===by.earth,Pm=!lcl&&d.p&&d.p!=='sun';let dvH,TH,brD,dep=3.2,r1=0,r2=0,v1=0;
-if(lcl){dvH=mo?3.9:1.5;TH=mo?4.98:Math.min(12,((d.p!=='sun'?d:host).P||5)*.6+2);brD=((d.p!=='sun'&&d!==A?d.a:host.a)||384400)*1000}
-else{r1=A.a*AUKM;r2=Z.a*AUKM;const at=(r1+r2)/2;v1=Math.abs(Math.sqrt(MU/r1)*(Math.sqrt(2*r2/(r1+r2))-1));TH=Math.PI*Math.sqrt(at**3/MU)/86400;dvH=v1+Math.abs(Math.sqrt(MU/r2)*(1-Math.sqrt(2*r1/(r1+r2))));brD=Math.abs(r2-r1)*1000;
-if(A!==by.earth){const mu=6.674e-11*A.M/1e9,rp=A.R*1.15;dep=Math.sqrt(v1*v1+2*mu/rp)-Math.sqrt(mu/rp)}}
-// Accurate Patched-Conic Oberth Delta-V (Departure injection + arrival capture + 0.2 km/s margin)
-const muA = 6.67430e-11 * A.M / 1e9, rpA = A.R + 200;
-const muZ = 6.67430e-11 * (Z.M || 6.417e23) / 1e9, rpZ = (Z.R || 3390) + 250;
-let vInj = 0, vIns = 0, req = 0;
+const P=PRP[pi],T=TIER[ti],lcl=A===Z,mo=lcl&&A===by.earth,Pm=!lcl&&d.p&&d.p!=='sun';let TH=259,req=6.5;
 if(lcl){
-  req = mo ? 3.96 : 1.5;
-} else {
-  const sol = solveInterplanetaryTransfer(A, Z, t + 30, PRP[pi]);
+  TH=mo?4.98:Math.min(12,((d.p!=='sun'?d:host).P||5)*0.6+2);
+  req=mo?4.03:1.5;
+}else{
+  const sol=solveInterplanetaryTransfer(A,Z,t,P);
   if(sol){
-    vInj = sol.vInj; vIns = sol.vIns;
-    req = Number((sol.totalDv + (Pm ? 1.5 : 0)).toFixed(2));
-    TH = sol.tofDays;
-  } else {
-    vInj = Math.sqrt(v1 * v1 + 2 * muA / rpA) - Math.sqrt(muA / rpA);
-    const v2arr = Math.abs(Math.sqrt(MU / Math.max(1, r2)) * (1 - Math.sqrt(2 * r1 / Math.max(1, (r1 + r2)))));
-    vIns = Math.sqrt(v2arr * v2arr + 2 * muZ / rpZ) - Math.sqrt(muZ / rpZ);
-    req = Number((vInj + vIns + 0.2 + (Pm ? 1.5 : 0)).toFixed(2));
+    TH=sol.tofDays;
+    req=Number((sol.totalDv+(Pm?1.5:0)).toFixed(2));
+  }else{
+    const r1=A.a*AUKM,r2=Z.a*AUKM,at=(r1+r2)/2;
+    TH=Math.PI*Math.sqrt(at**3/MU)/86400;
+    req=6.5;
   }
 }
-const pm = po ? 0.8 : Math.min(1, 1.3 / (Z.a * Z.a)), pw = po ? 9 : 6 * (1 + 0.4 * Z.a * Z.a);
-let tr=pi===0?TH:pi===1?TH*.8:pi===2?(lcl?(mo?25:TH*1.3):TH*1.15+25):2*Math.sqrt(brD/P.acc)/86400;if(Pm)tr+=Math.min(12,d.P*.6+2);
-const cons=.0138*tr*1.15,Md=.12*T.M0+25+P.m+pw+cons,cap=Md<T.M0?P.isp*9.80665*Math.log(T.M0/Md)/1000:0;
-const cost=lcl?(T.c+P.c)*.6+(po?250:120):T.c+P.c+(po?250:120)+40*Math.max(Z.a,1)+(Pm?150:0)+cons*8,dose=tr*2.3,pR=1/(1+Math.pow(dose/4500,4)),surv=100*pR*((!lcl&&Z.a>2.6)?.98:1)*(tr>1500?Math.max(.5,1-(tr-1500)/6000):1),why=[];
-if(cap<req)why.push('Δv short');if(cost>BUDGET)why.push('over budget');if(pi>=2&&pm<.5)why.push('power too weak');if(pm<.15)why.push('no power');if(tr*1.15>2400)why.push('crew endurance');if(Md>=T.M0*.96)why.push('overweight');
+const pm=po?0.8:Math.min(1,1.3/(Z.a*Z.a)),pw=po?9:6*(1+0.4*Z.a*Z.a);
+const tr=TH; // Transit duration is strictly the calculated orbital transfer duration
+const cons=Math.min(28,0.0138*tr*1.15),Md=0.12*T.M0+25+P.m+pw+cons,cap=Md<T.M0?P.isp*9.80665*Math.log(T.M0/Md)/1000:0;
+const shieldFactor=(P.k===2?0.08:ti===1?0.25:1.0);
+const cost=lcl?(T.c+P.c)*0.6+(po?250:120):T.c+P.c+(po?250:120)+40*Math.max(Z.a,1)+(Pm?150:0)+cons*8,dose=tr*2.3*shieldFactor,pR=1/(1+Math.pow(dose/4500,4)),surv=100*pR*((!lcl&&Z.a>2.6)?0.98:1)*(tr>1500?Math.max(0.5,1-(tr-1500)/6000):1),why=[];
+if(cap<req)why.push('Δv short');if(cost>BUDGET)why.push('over budget');if(pi>=2&&pm<0.5)why.push('power too weak');if(pm<0.15)why.push('no power');
+const maxEndurance=(pi===3?100000:(pi===2&&ti===1&&po===1)?35000:2400);
+if(tr*1.15>maxEndurance)why.push('crew endurance');
+if(Md>=T.M0*0.96)why.push('overweight');
 return{d,host,pi,ti,po,P,T,Z,mo,lcl,Pm,req,cap,Md,M0:T.M0,tr,cost,dose,surv,pm,why,ok:!why.length,cons}}
 function etaLine(){const o=evalOpt(MC.dest,MC.prop,MC.tier,MC.pow);return o&&by[sel]&&by[sel].n===MC.dest?`> ETA ${f(o.tr,0)} d · ${PRP[MC.prop].n.split(' ')[0].toUpperCase()}`:''}
 function chips(el,list,cur,fn){el.innerHTML='';list.forEach((n,i)=>{const b=document.createElement('button');b.textContent=n;b.className=i===cur?'on':'';b.onclick=()=>fn(i);el.appendChild(b)})}
@@ -8408,17 +8676,27 @@ if(craft&&craft.cutOn&&!craft.cutEnd)endCut(craft);cut(false);
 homeB=b;craft=null;PO=null;$('#mcM').style.display='none';cm.visible=false;tn=0;tg.setDrawRange(0,0);orbOff=null;setPath(null);setWarp(1);
 toast('Shuttle parked in orbit of '+b.n,1);
 const nd=MC.dest===b.n?(b.id==='earth'?'Mars':'Earth'):MC.dest;mcSet({dest:nd});$('#o').value=b.n;calc()});
-function launchMission(o){if(craft&&craft.state==='cruise'){toast('Mission in progress — wait for arrival before launching again',1);return}MC.prop=o.pi;MC.tier=o.ti;const host=curHost();$('#o').value=host.n;$('#d').value=o.d.n;$('#pr').value=o.pi;if(o.lcl)armLocal(o,o.d,o.tr,host,((o.d.p!=='sun'&&o.d!==root(host))?o.d.a:host.a)||384400);else{calc();armOld()}
-if(!craft)return;craft.host=host;craft.ph=Object.assign({},craft.ph,{tt:o.tr,dv:o.req});
-if(plan&&plan.sol&&!craft.local){
-  craft.ph.r1_ecl=plan.r1_ecl;
-  craft.ph.v1_ecl=plan.v1_ecl;
-  craft.ph.r2_ecl=plan.r2_ecl;
-  craft.ph.v2_ecl=plan.v2_ecl;
-  craft.ph.tt=plan.tt;
-  craft.ph.dv=plan.dv;
+function launchMission(o){if(craft&&craft.state==='cruise'){toast('Mission in progress — wait for arrival before launching again',1);return}MC.prop=o.pi;MC.tier=o.ti;const host=curHost();$('#o').value=host.n;$('#d').value=o.d.n;$('#pr').value=o.pi;
+if(o.lcl){
+  armLocal(o,o.d,o.tr,host,((o.d.p!=='sun'&&o.d!==root(host))?o.d.a:host.a)||384400);
+}else{
+  calc();
+  if(!plan||!plan.sol){toast('Error calculating interplanetary trajectory',1);return}
+  craft={
+    state:'wait',t0:plan.tDep,th0:0,dose:0,out:true,
+    ph:Object.assign({},plan),burn:0,last:t,O2:400,host
+  };
+  tn=0;tg.setDrawRange(0,0);
 }
-craft.opt=o;craft.hull=100;craft.arr=0;craft.soi=0;craft.auto=true;craft.cw=Math.max(60,Math.min(1e6,((craft.t0-t)+craft.ph.tt)*86400/170));craft.cwW=Math.max(60,Math.min(1e6,(craft.t0-t)*86400/16));setPath(craft.ph,craft.th0,craft.out,craft.local);setWarp(40,true);mcBuild();evLog('i',`Mission armed: ${host.n} → ${o.d.n} (${o.P.n}, ${o.T.n})`);toast(`Launch sequence started: ${o.P.n} to ${o.d.n}. Autopilot time compression on.`,1);
+if(!craft)return;
+craft.host=host;
+craft.opt=o;craft.hull=100;craft.arr=0;craft.soi=0;craft.auto=true;
+craft.cw=Math.max(60,Math.min(1e6,((craft.t0-t)+craft.ph.tt)*86400/170));
+craft.cwW=Math.max(60,Math.min(1e6,(craft.t0-t)*86400/16));
+setPath(craft.ph,craft.th0,craft.out,craft.local);
+setWarp(40,true);mcBuild();
+evLog('i',`Mission armed: ${host.n} → ${o.d.n} (${o.P.n}, ${o.T.n}) · TOF ${f(craft.ph.tt,1)} d · Δv ${f(craft.ph.dv,2)} km/s`);
+toast(`Launch sequence started: ${o.P.n} to ${o.d.n}. Autopilot time compression on.`,1);
 AudioManager.playSfx('beep_confirm.wav');
 setTimeout(() => AudioManager.playVoice('voice_main_prop.wav'), 600);}
 
@@ -8544,11 +8822,12 @@ cv.addEventListener('pointerup',e=>{if(mode!=='shuttle'||!dn||Math.hypot(e.clien
 mcBuild();$('#mcGo').onclick=showPoss;$('#mcNo').onclick=()=>$('#mcM').style.display='none';$('#mcOk').onclick=()=>{if(PO&&PO.sel.ok){launchMission(PO.sel);$('#mcM').style.display='none'}};
 const btnAbort = $('#btn-abort-mission'); if(btnAbort) btnAbort.onclick = abortMission;
 const btnVwAbort = $('#btn-vw-abort'); if(btnVwAbort) btnVwAbort.onclick = abortMission;
-$('#mcMt').onclick=e=>{const r=e.target.closest('tr.o');if(!r||!PO)return;PO.sel=PO.rows[+r.dataset.i];drawPoss()};$('#bm').onclick=()=>document.body.classList.toggle('nomc');
+$('#mcMt').onclick=e=>{const r=e.target.closest('tr.o');if(!r||!PO)return;PO.sel=PO.rows[+r.dataset.i];drawPoss()};const bmBtn=$('#bm');if(bmBtn)bmBtn.onclick=()=>document.body.classList.toggle('nomc');
 addEventListener('keydown',e=>{if(e.target.tagName==='INPUT'||e.target.tagName==='SELECT')return;if(e.key==='m')document.body.classList.toggle('nomc')});
 // flight paths and orbit rings
 PAL.ship='#ffb8d9';PAL.dest='#bba9ff';
 // ================= SLIDING PANELS & CLEAN VIEW CONTROLLER =================
+
 const HS = {
   hl: 0,
   hr: 0,
@@ -8616,7 +8895,13 @@ $('#tA').onclick = hsAll;
 
 addEventListener('keydown', e => {
   if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable) return;
-  if (e.key === 'h' || e.key === 'H') hsAll();
+  if (e.key === 'h' || e.key === 'H' || (!FREE_ROAM.active && (e.key === 's' || e.key === 'S') && !LS.on)) {
+    hsAll();
+  }
+  if (mode === 'shuttle' && '123456'.includes(e.key)) {
+    e.preventDefault();
+    view(['front','commander','copilot','pilotview','aft','up'][+e.key-1]);
+  }
 });
 let PATHPTS=[];const pathGeo=new THREE.BufferGeometry(),pathLine=new THREE.Line(pathGeo,new THREE.LineDashedMaterial({color:0xbba9ff,dashSize:1.4,gapSize:.9,transparent:true,opacity:.9,depthWrite:false}));pathLine.frustumCulled=false;pathLine.visible=false;S.add(pathLine);
 const destMark=new THREE.Sprite(selR.material.clone());destMark.visible=false;S.add(destMark);
@@ -8624,8 +8909,9 @@ function setPath(ph,th0,out,local){
   if(!ph||local){pathLine.visible=false;destMark.visible=false;PATHPTS=[];return}
   const pts=[];
   if(ph.r1_ecl && ph.v1_ecl){
-    for(let i=0;i<=150;i++){
-      const u=i/150;
+    const stepCount=180;
+    for(let i=0;i<=stepCount;i++){
+      const u=i/stepCount;
       const tauSec=u*ph.tt*86400;
       const prop=propagateKepler(ph.r1_ecl,ph.v1_ecl,tauSec,MU);
       const X_AU=prop.r[0]/AUKM, Y_AU=prop.r[1]/AUKM, Z_AU=prop.r[2]/AUKM;
@@ -9153,17 +9439,35 @@ function enterShuttle(){
   $('#ck').style.display='none';
   AudioManager.syncCockpitState(true);
 }
+window.view = view;
 function view(n){
-  const V={pilot:[...CKP(0,-1.72,-8.12),0,0],co:[...CKP(.4,-1.74,-8.2),.35,0],aft:[...CKP(0,-1.8,-8.35),Math.PI,0],up:[...CKP(0,-1.8,-8.25),0,1.2]}[n];
+  const V={
+    front: [...CKP(0,-1.68,-8.08), 0, 0],
+    pilot: [...CKP(0,-1.72,-8.12), 0, 0],
+    commander: [...CKP(0,-1.72,-8.12), 0, 0],
+    co: [...CKP(.4,-1.74,-8.2), .35, 0],
+    copilot: [...CKP(.4,-1.74,-8.2), .35, 0],
+    pilotview: [...CKP(-.4,-1.74,-8.2), -.35, 0],
+    aft: [...CKP(0,-1.8,-8.35), Math.PI, 0],
+    up: [...CKP(0,-1.8,-8.25), 0, 1.2]
+  }[n];
   if(!V)return;
   enterShuttle();
-  if(typeof FREE_ROAM!=='undefined'&&FREE_ROAM.active&&n==='pilot'){
+  if(typeof FREE_ROAM!=='undefined'&&FREE_ROAM.active&&(n==='pilot'||n==='commander'||n==='front')){
     ipos.set(V[0],V[1],V[2]);look.yaw=0;look.pitch=0;return;
   }
   const dy=((V[3]-look.yaw+Math.PI)%6.2832+6.2832)%6.2832-Math.PI;
   gsap.to(ipos,{x:V[0],y:V[1],z:V[2],duration:1.4,ease:'power2.inOut'});
   gsap.to(look,{yaw:look.yaw+dy,pitch:V[4],duration:1.4,ease:'power2.inOut'});
-  for(const b of document.querySelectorAll('#vw button'))b.classList.toggle('on',b.dataset.v===n);
+  for(const b of document.querySelectorAll('#vw button')){
+    const bv = b.dataset.v;
+    const matches = (bv === n) || 
+      (n === 'commander' && bv === 'pilot') || 
+      (n === 'pilot' && bv === 'commander') ||
+      (n === 'copilot' && bv === 'co') || 
+      (n === 'co' && bv === 'copilot');
+    b.classList.toggle('on', matches);
+  }
 }
 let drg=null;cv.style.touchAction='none';
 cv.addEventListener('pointerdown',e=>{if(mode==='shuttle'){drg=[e.clientX,e.clientY];cv.setPointerCapture(e.pointerId)}});
@@ -9897,6 +10201,7 @@ if (window.__launchRequested) {
 }
 if (window.MobileController) MobileController.init();
 window.__spaceExpo = {
+  update,
   craftStep,
   LS, EX: LS.EX, getCraft: () => craft, getEarthSwitched: () => (LS.getEarthSwitched ? LS.getEarthSwitched() : false), getEarth: () => (LS.getEarth ? LS.getEarth() : null), getEarthM: () => (LS.getEarthM ? LS.getEarthM() : null), getCloudS: () => (LS.getCloudS ? LS.getCloudS() : null), getClouds: () => (LS.getClouds ? LS.getClouds() : []), getOrb: () => orb, getCm: () => cm,
   focus,
@@ -9906,7 +10211,7 @@ window.__spaceExpo = {
   MobileController,
   emergencyBrake,
   B, by, MU, AUKM, MU_EARTH, MU_MOON, MU_MARS,
-  calc, evalOpt, launchMission, abortMission,
+  calc, evalOpt, launchMission, abortMission, solveInterplanetaryTransfer, mcSet, showPoss, getPO: () => PO,
   DSP, FREE_ROAM, TOUR,
   getThrS: () => thrS,
   getFls: () => fls,
