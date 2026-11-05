@@ -193,7 +193,7 @@ SPACE EXPO features an adaptive multi-channel spatial audio architecture built o
 ## 👥 Project Team & Credits
 
 - **Hardik R Bhavsar** — Project Lead, Astrodynamics Architecture, 3D Simulation Development
-- **Sugam Vasta** — Simulation Design, Systems Engineering, Visual Integration
+- **Shubham Wastav** — Simulation Design, Systems Engineering, Visual Integration
 
 ### Scientific & Data Attributions:
 - **Orbital Mechanics & Planetary Ephemeris**: Public domain astrodynamic constants courtesy of **NASA Jet Propulsion Laboratory (JPL)** Horizons system and **NASA Goddard Space Flight Center (GMAT)**.
