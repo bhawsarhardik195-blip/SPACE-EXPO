@@ -7901,9 +7901,9 @@ function updateFreeRoamUI(){
     } else if(FREE_ROAM.keys.numpad2 || FREE_ROAM.keys.numpadDown){
       stVal.textContent = 'DESCENDING (PITCH DOWN)';
     } else if(FREE_ROAM.keys.numpad4){
-      stVal.textContent = 'BANKING LEFT (CURVED TURN)';
+      stVal.textContent = 'BANKING LEFT (TURNING)';
     } else if(FREE_ROAM.keys.numpad6){
-      stVal.textContent = 'BANKING RIGHT (CURVED TURN)';
+      stVal.textContent = 'BANKING RIGHT (TURNING)';
     } else if(FREE_ROAM.keys.left || FREE_ROAM.keys.right){
       stVal.textContent = 'LATERAL YAW';
     } else if(isZero){
@@ -8049,7 +8049,8 @@ function freeRoamStep(dt){
     FREE_ROAM.quat.normalize();
   }
 
-  // 2. AIRCRAFT BANKING & COORDINATED TURNS: NUMPAD 4 (Bank Left) & NUMPAD 6 (Bank Right)
+  // 2. AIRCRAFT BANKING: NUMPAD 4 (Bank Left) & NUMPAD 6 (Bank Right)
+  // Pure roll rotation around longitudinal forward axis (vForward) — zero pitch coupling or vertical translation
   const maxBank = 0.785; // 45 degrees max bank angle
   const bankSpeed = 2.2 * dt; // banking roll rate (rad/sec)
   const recoverRate = 2.4 * dt; // wing-leveling recovery rate (rad/sec)
@@ -8074,17 +8075,21 @@ function freeRoamStep(dt){
 
   const deltaBank = FREE_ROAM.bankAngle - prevBank;
   if(Math.abs(deltaBank) > 1e-6){
-    // Apply delta roll around the current forward axis
+    // Apply delta roll around current longitudinal forward flight vector
     const qRoll = new THREE.Quaternion().setFromAxisAngle(vForward, deltaBank);
     FREE_ROAM.quat.premultiply(qRoll);
     FREE_ROAM.quat.normalize();
   }
 
-  // Coordinated Turn: banking produces curved heading change
+  // Coordinated Aircraft Turn: banking actively curves heading and flight trajectory
+  // Turn axis is the horizon-vertical vector (world UP: 0, 1, 0), ensuring zero pitch cross-coupling or vertical drift
   if(Math.abs(FREE_ROAM.bankAngle) > 0.005){
-    // Turn rate proportional to bank angle
-    const turnRate = (-FREE_ROAM.bankAngle / maxBank) * 1.25 * dt;
-    const qTurn = new THREE.Quaternion().setFromAxisAngle(vUp, turnRate);
+    const turnRate = (-FREE_ROAM.bankAngle / maxBank) * 1.35 * dt;
+    let turnAxis = new THREE.Vector3(0, 1, 0);
+    if(Math.abs(vForward.y) > 0.95){
+      turnAxis = vUp.clone().normalize();
+    }
+    const qTurn = new THREE.Quaternion().setFromAxisAngle(turnAxis, turnRate);
     FREE_ROAM.quat.premultiply(qTurn);
     FREE_ROAM.quat.normalize();
   }
@@ -8523,14 +8528,18 @@ function orbFx(ts,dt){
   FT.value=ts;
   let thr=0;
   if(FREE_ROAM.active){
-    const { up, down, shift, ctrl } = FREE_ROAM.keys;
+    const { up, down, shift, ctrl, numpad8, numpad2, numpadUp, numpadDown } = FREE_ROAM.keys;
+    let thrForward = 0;
     if(up){
-      thr = shift ? 1.0 : (ctrl ? 0.35 : 0.80);
+      thrForward = shift ? 1.0 : (ctrl ? 0.35 : 0.80);
     } else if(down){
-      thr = shift ? 0.85 : (ctrl ? 0.25 : 0.55);
-    } else {
-      thr = 0.0;
+      thrForward = shift ? 0.85 : (ctrl ? 0.25 : 0.55);
     }
+    let thrPitch = 0;
+    if(numpad8 || numpadUp || numpad2 || numpadDown){
+      thrPitch = shift ? 1.0 : (ctrl ? 0.40 : 0.80);
+    }
+    thr = Math.max(thrForward, thrPitch);
   } else {
     const c=craft;
     if(c&&c.q&&c.state==='cruise'){
@@ -8538,7 +8547,7 @@ function orbFx(ts,dt){
       thr=(u<th||u>1-th)?1:(p.k===2?.9:p.k===1?.3:0);
     }
   }
-  const rampRate = (thr > thrS) ? 8.0 : 6.0;
+  const rampRate = (thr > thrS) ? 14.0 : 8.0;
   thrS += (thr - thrS) * Math.min(1, dt * rampRate);
   if(thr === 0 && thrS < 0.02) thrS = 0;
   FI.value = thrS;
