@@ -7405,9 +7405,10 @@ addEventListener('keydown',e=>{
     AudioManager.syncCockpitState(false, 0.4);
     return;
   }
-  if(LS.cockpit&&'123456'.includes(e.key)){
+  const topDigitLS = (typeof isTopRowCameraKey === 'function') ? isTopRowCameraKey(e) : 0;
+  if(LS.cockpit && topDigitLS >= 1 && topDigitLS <= 6){
     e.preventDefault();
-    view(['front','commander','copilot','pilotview','rearleft','rearright'][+e.key-1]);
+    view(['front','commander','copilot','pilotview','rearleft','rearright'][topDigitLS - 1]);
     return;
   }
   if(e.key==='Escape'){
@@ -8900,10 +8901,6 @@ addEventListener('keydown', e => {
   if (e.key === 'h' || e.key === 'H' || (!FREE_ROAM.active && (e.key === 's' || e.key === 'S') && !LS.on)) {
     hsAll();
   }
-  if (mode === 'shuttle' && '123456'.includes(e.key)) {
-    e.preventDefault();
-    view(['front','commander','copilot','pilotview','rearleft','rearright'][+e.key-1]);
-  }
 });
 let PATHPTS=[];const pathGeo=new THREE.BufferGeometry(),pathLine=new THREE.Line(pathGeo,new THREE.LineDashedMaterial({color:0xbba9ff,dashSize:1.4,gapSize:.9,transparent:true,opacity:.9,depthWrite:false}));pathLine.frustumCulled=false;pathLine.visible=false;S.add(pathLine);
 const destMark=new THREE.Sprite(selR.material.clone());destMark.visible=false;S.add(destMark);
@@ -9526,21 +9523,48 @@ if($('#btn-mode-normal')) $('#btn-mode-normal').onclick = () => setGameMode('nor
 if($('#btn-mode-free-roam')) $('#btn-mode-free-roam').onclick = () => setGameMode('free-roam');
 
 
-// FREE ROAM KEYBOARD FLIGHT CONTROLLER
+// STRICT KEYBOARD INPUT SEPARATION: TOP-ROW CAMERA SWITCHING vs NUMPAD FLIGHT CONTROLS
+function isTopRowCameraKey(e) {
+  if (!e) return 0;
+  // NUMPAD keys are EXCLUSIVELY reserved for flight controls — NEVER trigger camera switching
+  if (e.location === 3) return 0;
+  if (typeof e.code === 'string' && e.code.startsWith('Numpad')) return 0;
+  // TOP NUMBER ROW directly below F1-F12: Digit1 through Digit6
+  if (e.code === 'Digit1' || (e.location === 0 && e.key === '1' && (!e.code || e.code === 'Digit1'))) return 1;
+  if (e.code === 'Digit2' || (e.location === 0 && e.key === '2' && (!e.code || e.code === 'Digit2'))) return 2;
+  if (e.code === 'Digit3' || (e.location === 0 && e.key === '3' && (!e.code || e.code === 'Digit3'))) return 3;
+  if (e.code === 'Digit4' || (e.location === 0 && e.key === '4' && (!e.code || e.code === 'Digit4'))) return 4;
+  if (e.code === 'Digit5' || (e.location === 0 && e.key === '5' && (!e.code || e.code === 'Digit5'))) return 5;
+  if (e.code === 'Digit6' || (e.location === 0 && e.key === '6' && (!e.code || e.code === 'Digit6'))) return 6;
+  return 0;
+}
+
+function isNumpadKey(e) {
+  if (!e) return false;
+  return e.location === 3 || (typeof e.code === 'string' && e.code.startsWith('Numpad'));
+}
+
+// FREE ROAM KEYBOARD FLIGHT CONTROLLER (NumLock Invariant)
 function isFRNumpad8(e) {
-  return e.code === 'Numpad8' || (e.location === 3 && (e.key === '8' || e.key === 'PageUp'));
+  return e.code === 'Numpad8' || (e.location === 3 && (e.key === '8' || e.key === 'ArrowUp' || e.key === 'PageUp'));
 }
 function isFRNumpad2(e) {
-  return e.code === 'Numpad2' || (e.location === 3 && (e.key === '2' || e.key === 'ArrowDown' || e.code === 'Numpad2'));
+  return e.code === 'Numpad2' || (e.location === 3 && (e.key === '2' || e.key === 'ArrowDown'));
 }
 function isFRNumpad4(e) {
-  return e.code === 'Numpad4' || (e.location === 3 && (e.key === '4' || e.key === 'ArrowLeft' || e.code === 'Numpad4'));
+  return e.code === 'Numpad4' || (e.location === 3 && (e.key === '4' || e.key === 'ArrowLeft'));
 }
 function isFRNumpad6(e) {
-  return e.code === 'Numpad6' || (e.location === 3 && (e.key === '6' || e.key === 'ArrowRight' || e.code === 'Numpad6'));
+  return e.code === 'Numpad6' || (e.location === 3 && (e.key === '6' || e.key === 'ArrowRight'));
 }
 function isFRNumpad5(e) {
   return e.code === 'Numpad5' || (e.location === 3 && (e.key === '5' || e.key === 'Clear'));
+}
+function isFRNumpad1(e) {
+  return e.code === 'Numpad1' || (e.location === 3 && (e.key === '1' || e.key === 'End'));
+}
+function isFRNumpad3(e) {
+  return e.code === 'Numpad3' || (e.location === 3 && (e.key === '3' || e.key === 'PageDown'));
 }
 function isFRStandardArrowUp(e) {
   return ((e.key === 'ArrowUp' || e.code === 'ArrowUp' || e.key === 'w' || e.key === 'W' || e.code === 'KeyW') && e.location !== 3 && e.code !== 'Numpad8');
@@ -10020,6 +10044,19 @@ window.emergencyBrake = emergencyBrake;
 window.addEventListener('keydown', e => {
   if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable) return;
 
+  // 1. TOP NUMBER ROW (1-6): Cockpit Camera Switching ONLY
+  // Strictly separated: NEVER triggered by Numpad keys regardless of NumLock state
+  const topCamDigit = isTopRowCameraKey(e);
+  if (topCamDigit >= 1 && topCamDigit <= 6) {
+    if (!LS.on) {
+      e.preventDefault();
+      const views = ['front', 'commander', 'copilot', 'pilotview', 'rearleft', 'rearright'];
+      view(views[topCamDigit - 1]);
+      return;
+    }
+  }
+
+  // 2. NUMPAD KEYS: Spacecraft Flight Controls ONLY (Never switch cameras)
   if (FREE_ROAM.active) {
     // Immediate Brake on Spacebar
     if (e.code === 'Space' || e.key === ' ') {
@@ -10030,7 +10067,8 @@ window.addEventListener('keydown', e => {
 
     // Arrow keys & Numpad keys control spacecraft flight
     if (isFRStandardArrowUp(e) || isFRStandardArrowDown(e) || isFRStandardArrowLeft(e) || isFRStandardArrowRight(e) ||
-        isFRNumpad8(e) || isFRNumpad2(e) || isFRNumpad4(e) || isFRNumpad6(e) || isFRNumpad5(e)) {
+        isFRNumpad8(e) || isFRNumpad2(e) || isFRNumpad4(e) || isFRNumpad6(e) || isFRNumpad5(e) ||
+        isFRNumpad1(e) || isFRNumpad3(e)) {
       e.preventDefault(); // prevent browser scrolling
     }
 
@@ -10118,10 +10156,6 @@ window.addEventListener('keydown', e => {
       return;
     }
     focus(sel);
-  }
-  // Perspective switching 1-6 ONLY triggers from top-row number keys, never from Numpad flight keys
-  if (mode === 'shuttle' && e.location === 0 && (e.code.startsWith('Digit') || !e.code) && '123456'.includes(e.key)) {
-    view(['front','commander','copilot','pilotview','rearleft','rearright'][+e.key-1]);
   }
 });
 
@@ -10236,6 +10270,8 @@ window.__spaceExpo = {
   getSel: () => sel,
   MobileController,
   emergencyBrake,
+  isTopRowCameraKey,
+  isNumpadKey,
   B, by, MU, AUKM, MU_EARTH, MU_MOON, MU_MARS,
   calc, evalOpt, launchMission, abortMission, solveInterplanetaryTransfer, mcSet, showPoss, getPO: () => PO,
   DSP, FREE_ROAM, TOUR,
