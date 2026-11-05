@@ -59,7 +59,7 @@ summary{cursor:pointer;color:var(--accent);padding:4px 0;font-weight:700}details
   pointer-events: auto !important;
   user-select: none !important;
   transition: opacity 0.25s ease, transform 0.25s ease !important;
-  max-width: min(390px, 92vw) !important;
+  max-width: min(440px, 94vw) !important;
 }
 body.imm #vw,
 body.cockpit-mode #vw,
@@ -84,18 +84,20 @@ body.ht #vw {
 }
 #vw button {
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace !important;
-  font-size: 9.5px !important;
+  font-size: 8.5px !important;
   font-weight: 700 !important;
-  letter-spacing: 0.04em !important;
-  padding: 5px 4px !important;
-  height: 26px !important;
+  letter-spacing: 0.02em !important;
+  padding: 4px 3px !important;
+  min-height: 28px !important;
+  height: auto !important;
   border-radius: 4px !important;
   border: 1px solid rgba(255, 255, 255, 0.2) !important;
   background: rgba(16, 24, 48, 0.8) !important;
   color: #d8e5f8 !important;
   cursor: pointer !important;
   text-align: center !important;
-  white-space: nowrap !important;
+  white-space: normal !important;
+  line-height: 1.15 !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -2495,12 +2497,12 @@ input, select, textarea {
   <div class="vw-buttons">
     <!-- ROW 1 -->
     <button data-v="front" class="cam-btn on" title="Centerline windshield forward perspective">FRONT VIEW</button>
-    <button data-v="commander" class="cam-btn" title="Commander station flight deck view">COMMANDER</button>
-    <button data-v="copilot" class="cam-btn" title="Co-Pilot right station flight deck view">CO-PILOT</button>
+    <button data-v="commander" class="cam-btn" title="Commander station (front left seat) eye level view">COMMANDER VIEW</button>
+    <button data-v="copilot" class="cam-btn" title="Co-Pilot station (front right seat) eye level view">CO-PILOT VIEW</button>
     <!-- ROW 2 -->
-    <button data-v="pilotview" class="cam-btn" title="Pilot instrument panel view">PILOT VIEW</button>
-    <button data-v="aft" class="cam-btn" title="Aft payload bay windows view">AFT WINDOW</button>
-    <button data-v="up" class="cam-btn" title="Overhead docking window view">OVERHEAD WINDOW</button>
+    <button data-v="pilotview" class="cam-btn" title="Pilot middle seat forward perspective">PILOT VIEW</button>
+    <button data-v="rearleft" class="cam-btn" title="Rear left passenger seat eye level view through left window">REAR LEFT PASSENGER VIEW</button>
+    <button data-v="rearright" class="cam-btn" title="Rear right passenger seat eye level view through right window">REAR RIGHT PASSENGER VIEW</button>
   </div>
 </div><div id="ck"><b id="ckt"></b></div><div id="mcM" class="g"><h3>Launch possibilities</h3><div id="mcMt"></div><div style="display:flex;gap:8px;margin-top:10px;justify-content:flex-end"><button id="mcNo">Cancel</button><button id="mcOk" class="go" style="width:auto">Confirm launch</button></div></div>
 <div class="lbx t"></div><div class="lbx b"></div><div id="cdT"></div>
@@ -7405,7 +7407,7 @@ addEventListener('keydown',e=>{
   }
   if(LS.cockpit&&'123456'.includes(e.key)){
     e.preventDefault();
-    view(['front','commander','copilot','pilotview','aft','up'][+e.key-1]);
+    view(['front','commander','copilot','pilotview','rearleft','rearright'][+e.key-1]);
     return;
   }
   if(e.key==='Escape'){
@@ -7635,7 +7637,7 @@ LS.render=function(){
      PC.aspect = Math.max(.2, _cw2 / Math.max(1, _ch2));
      PC.updateProjectionMatrix();
 
-     icam.position.set(...CKP(0,-1.72,-8.12));
+     icam.position.copy(ipos);
      icam.quaternion.copy(CK.lq);
      icam.aspect=PC.aspect;
      icam.updateProjectionMatrix();
@@ -7762,7 +7764,7 @@ acc+=dt;if(acc>.25){acc=0;$('#clk').textContent=new Date(Date.UTC(2000,0,1,12)+t
 renderAll()}
 // ---- SHUTTLE INTERIOR (Atlantis C-17 glass cockpit + animated astronaut)
 const CKM={K:1.2679,OC:[0,-1.9,-8.4]},CKP=(x,y,z)=>[(x-CKM.OC[0])*CKM.K,(y-CKM.OC[1])*CKM.K,(z-CKM.OC[2])*CKM.K];
-const IN=new THREE.Scene(),icam=new THREE.PerspectiveCamera(82,1,.03,60),ipos=new THREE.Vector3(...CKP(0,-1.72,-8.12)),look={yaw:0,pitch:0},lq=new THREE.Quaternion(),eu=new THREE.Euler(0,0,0,'YXZ');
+const IN=new THREE.Scene(),icam=new THREE.PerspectiveCamera(82,1,.03,60),ipos=new THREE.Vector3(0,0.08,-1.06),look={yaw:0,pitch:0},lq=new THREE.Quaternion(),eu=new THREE.Euler(0,0,0,'YXZ');
 IN.add(new THREE.AmbientLight(0xa8b4c8,.6));
 const L1=new THREE.PointLight(0xff5a40,.12,7,1.6),L2=new THREE.PointLight(0x20c8ff,.28,8,1.5),L3=new THREE.PointLight(0xffd9a8,.8,9,1.2),L4=new THREE.PointLight(0x20c8ff,.35,6,1.4);
 L1.position.set(0,.9,-1);L2.position.set(-1.1,.3,-1);L3.position.set(0,1.1,.3);L4.position.set(0,-.3,-.7);IN.add(L1,L2,L3,L4);
@@ -8900,7 +8902,7 @@ addEventListener('keydown', e => {
   }
   if (mode === 'shuttle' && '123456'.includes(e.key)) {
     e.preventDefault();
-    view(['front','commander','copilot','pilotview','aft','up'][+e.key-1]);
+    view(['front','commander','copilot','pilotview','rearleft','rearright'][+e.key-1]);
   }
 });
 let PATHPTS=[];const pathGeo=new THREE.BufferGeometry(),pathLine=new THREE.Line(pathGeo,new THREE.LineDashedMaterial({color:0xbba9ff,dashSize:1.4,gapSize:.9,transparent:true,opacity:.9,depthWrite:false}));pathLine.frustumCulled=false;pathLine.visible=false;S.add(pathLine);
@@ -9384,6 +9386,7 @@ function tourGoStage(idx, autoAdvance = true){
 }
 
 function tourStart(){
+  if(typeof mode !== 'undefined' && mode === 'shuttle') return;
   tourStop();
   TOUR.on = true;
   DSP.orb = 1;
@@ -9432,6 +9435,9 @@ let au=null;function hum(){if(au){au.C.resume&&au.C.resume();return}try{const C=
 // controls: drag = look 360°, wheel = zoom (FOV), 1-4 = viewpoints, V = toggle, Esc = exit
 function enterShuttle(){
   hum();
+  if(typeof tourStop === 'function') tourStop();
+  const tb = typeof $ === 'function' ? $('#tour-nav-bar') : document.getElementById('tour-nav-bar');
+  if(tb) tb.style.display = 'none';
   if(mode==='shuttle')return;
   tween&&tween.kill();
   track=null;
@@ -9441,31 +9447,46 @@ function enterShuttle(){
 }
 window.view = view;
 function view(n){
+  if(typeof tourStop === 'function') tourStop();
+  const tb = typeof $ === 'function' ? $('#tour-nav-bar') : document.getElementById('tour-nav-bar');
+  if(tb) tb.style.display = 'none';
   const V={
-    front: [...CKP(0,-1.68,-8.08), 0, 0],
-    pilot: [...CKP(0,-1.72,-8.12), 0, 0],
-    commander: [...CKP(0,-1.72,-8.12), 0, 0],
-    co: [...CKP(.4,-1.74,-8.2), .35, 0],
-    copilot: [...CKP(.4,-1.74,-8.2), .35, 0],
-    pilotview: [...CKP(-.4,-1.74,-8.2), -.35, 0],
-    aft: [...CKP(0,-1.8,-8.35), Math.PI, 0],
-    up: [...CKP(0,-1.8,-8.25), 0, 1.2]
+    front: [0, 0.08, -1.06, 0, 0, 82],
+    commander: [-0.40, 0.06, -0.38, -0.15, 0.02, 82],
+    copilot: [0.40, 0.06, -0.38, 0.15, 0.02, 82],
+    co: [0.40, 0.06, -0.38, 0.15, 0.02, 82],
+    pilotview: [0, 0.08, -0.44, 0, 0.01, 68],
+    pilot: [0, 0.08, -0.44, 0, 0.01, 68],
+    rearleft: [-0.55, 0.02, -0.05, Math.PI / 2, 0.02, 75],
+    aft: [-0.55, 0.02, -0.05, Math.PI / 2, 0.02, 75],
+    rearright: [0.55, 0.02, -0.05, -Math.PI / 2, 0.02, 75],
+    up: [0.55, 0.02, -0.05, -Math.PI / 2, 0.02, 75]
   }[n];
   if(!V)return;
   enterShuttle();
-  if(typeof FREE_ROAM!=='undefined'&&FREE_ROAM.active&&(n==='pilot'||n==='commander'||n==='front')){
-    ipos.set(V[0],V[1],V[2]);look.yaw=0;look.pitch=0;return;
+  if(typeof FREE_ROAM!=='undefined'&&FREE_ROAM.active&&(n==='pilot'||n==='commander'||n==='front'||n==='pilotview')){
+    ipos.set(V[0],V[1],V[2]);look.yaw=V[3];look.pitch=V[4];
+    if(V[5] && typeof icam !== 'undefined'){ icam.fov=V[5]; icam.updateProjectionMatrix(); }
+    return;
   }
   const dy=((V[3]-look.yaw+Math.PI)%6.2832+6.2832)%6.2832-Math.PI;
   gsap.to(ipos,{x:V[0],y:V[1],z:V[2],duration:1.4,ease:'power2.inOut'});
   gsap.to(look,{yaw:look.yaw+dy,pitch:V[4],duration:1.4,ease:'power2.inOut'});
+  if(V[5] && typeof icam !== 'undefined'){
+    gsap.to(icam,{fov:V[5],duration:1.4,ease:'power2.inOut',onUpdate:()=>icam.updateProjectionMatrix()});
+  }
   for(const b of document.querySelectorAll('#vw button')){
     const bv = b.dataset.v;
     const matches = (bv === n) || 
-      (n === 'commander' && bv === 'pilot') || 
-      (n === 'pilot' && bv === 'commander') ||
-      (n === 'copilot' && bv === 'co') || 
-      (n === 'co' && bv === 'copilot');
+      (n === 'commander' && bv === 'commander') || 
+      (n === 'pilot' && (bv === 'pilotview' || bv === 'pilot')) ||
+      (n === 'pilotview' && (bv === 'pilotview' || bv === 'pilot')) ||
+      (n === 'copilot' && (bv === 'copilot' || bv === 'co')) || 
+      (n === 'co' && (bv === 'copilot' || bv === 'co')) ||
+      (n === 'aft' && (bv === 'rearleft' || bv === 'aft')) ||
+      (n === 'rearleft' && (bv === 'rearleft' || bv === 'aft')) ||
+      (n === 'up' && (bv === 'rearright' || bv === 'up')) ||
+      (n === 'rearright' && (bv === 'rearright' || bv === 'up'));
     b.classList.toggle('on', matches);
   }
 }
@@ -10098,9 +10119,9 @@ window.addEventListener('keydown', e => {
     }
     focus(sel);
   }
-  // Perspective switching 1-4 ONLY triggers from top-row number keys, never from Numpad flight keys
-  if (mode === 'shuttle' && e.location === 0 && (e.code.startsWith('Digit') || !e.code) && '1234'.includes(e.key)) {
-    view(['pilot','co','aft','up'][+e.key-1]);
+  // Perspective switching 1-6 ONLY triggers from top-row number keys, never from Numpad flight keys
+  if (mode === 'shuttle' && e.location === 0 && (e.code.startsWith('Digit') || !e.code) && '123456'.includes(e.key)) {
+    view(['front','commander','copilot','pilotview','rearleft','rearright'][+e.key-1]);
   }
 });
 
@@ -10201,6 +10222,11 @@ if (window.__launchRequested) {
 }
 if (window.MobileController) MobileController.init();
 window.__spaceExpo = {
+  view,
+  ipos,
+  look,
+  CKP,
+  icam: (typeof icam !== 'undefined' ? icam : null),
   update,
   craftStep,
   LS, EX: LS.EX, getCraft: () => craft, getEarthSwitched: () => (LS.getEarthSwitched ? LS.getEarthSwitched() : false), getEarth: () => (LS.getEarth ? LS.getEarth() : null), getEarthM: () => (LS.getEarthM ? LS.getEarthM() : null), getCloudS: () => (LS.getCloudS ? LS.getCloudS() : null), getClouds: () => (LS.getClouds ? LS.getClouds() : []), getOrb: () => orb, getCm: () => cm,
