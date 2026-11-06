@@ -50,7 +50,7 @@ Open your browser at `http://localhost:8080/`.
 
 ### Option C: VS Code Live Server
 1. Install the **Live Server** extension (by Ritwick Dey) in Visual Studio Code.
-2. Right-click `index.html` or `VORQASTRA Enhanced Upgrade.html` in the file explorer.
+2. Right-click `VORQASTRA.html` in the file explorer.
 3. Select **"Open with Live Server"**.
 
 ---
@@ -58,16 +58,22 @@ Open your browser at `http://localhost:8080/`.
 ## 3. Cloudflare Pages & Production Deployment
 
 VORQASTRA is deployed continuously to **Cloudflare Pages**:
-- **Live URL**: [https://spacexpo.pages.dev](https://spacexpo.pages.dev)
+- **Production URL**: [https://vorqastra.pages.dev](https://vorqastra.pages.dev)
+- **Fallback URL**: [https://spacexpo.pages.dev](https://spacexpo.pages.dev)
 - **Deployment Platform**: Cloudflare Pages
-- **Repository**: Connected to `https://github.com/bhawsarhardik195-blip/SPACE-EXPO.git` (`main` branch)
+- **Repository**: Connected to `https://github.com/bhawsarhardik195-blip/VORQASTRA.git` (`main` branch)
 
 ### Cloudflare Routing Architecture:
 - `_redirects`: Configures standard Cloudflare Pages SPA rewrite and redirect rules:
   ```text
-  /    /Space%20Expo%20Enhanced%20Upgrade.html    302
+  /    /VORQASTRA    200
+  /VORQASTRA.html    /VORQASTRA    301
+  /Space%20Expo%20Enhanced%20Upgrade    /VORQASTRA    301
+  /Space%20Expo%20Enhanced%20Upgrade.html    /VORQASTRA    301
+  /space-expo    /VORQASTRA    301
+  /spacexpo    /VORQASTRA    301
   ```
-- `index.html`: Contains a lightweight client-side fallback redirect (`<meta http-equiv="refresh">` and `window.location.replace`) to `/Space%20Expo%20Enhanced%20Upgrade.html` to guarantee universal compatibility across edge CDNs, mobile devices, and direct links.
+  This serves `VORQASTRA.html` directly at `/` via Cloudflare's pretty-URL routing with zero redirect latency, while smoothly redirecting legacy paths.
 
 ---
 
@@ -87,12 +93,12 @@ Ensure your host or reverse proxy serves binary assets with proper `Content-Type
 ```nginx
 server {
     listen 80;
-    server_name spaceexpo.example.com;
-    root /var/www/spaceexpo;
-    index index.html;
+    server_name vorqastra.example.com;
+    root /var/www/vorqastra;
+    index VORQASTRA.html index.html;
 
     location / {
-        try_files $uri $uri/ /Space%20Expo%20Enhanced%20Upgrade.html;
+        try_files $uri $uri/ /VORQASTRA.html;
     }
 
     location /audio/ {

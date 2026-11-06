@@ -2,13 +2,13 @@
 
 <div align="center">
 
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-spacexpo.pages.dev-00e5ff?style=for-the-badge&logo=cloudflare&logoColor=white)](https://spacexpo.pages.dev)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-vorqastra.pages.dev-00e5ff?style=for-the-badge&logo=cloudflare&logoColor=white)](https://vorqastra.pages.dev)
 [![WebGL Three.js](https://img.shields.io/badge/3D%20Engine-Three.js%20WebGL-ff6f00?style=for-the-badge&logo=three.js&logoColor=white)](https://threejs.org/)
 [![Orbital Mechanics](https://img.shields.io/badge/Physics-NASA%20JPL%20Validated-4fd1ff?style=for-the-badge&logo=nasa&logoColor=white)](https://ssd.jpl.nasa.gov/horizons/)
 [![License](https://img.shields.io/badge/License-CC%20BY%204.0-brightgreen?style=for-the-badge)](https://creativecommons.org/licenses/by/4.0/)
-[![Repository](https://img.shields.io/badge/GitHub-SPACE--EXPO-white?style=for-the-badge&logo=github&logoColor=black)](https://github.com/bhawsarhardik195-blip/SPACE-EXPO.git)
+[![Repository](https://img.shields.io/badge/GitHub-VORQASTRA-white?style=for-the-badge&logo=github&logoColor=black)](https://github.com/bhawsarhardik195-blip/VORQASTRA.git)
 
-### 🚀 [**Launch Live Simulator on Cloudflare Pages**](https://spacexpo.pages.dev)
+### 🚀 [**Launch Live Simulator on Cloudflare Pages**](https://vorqastra.pages.dev) *(Fallback: [spacexpo.pages.dev](https://spacexpo.pages.dev))*
 
 An interactive, scientifically calibrated solar system exploration and spaceflight simulation engine running entirely in the browser.
 
@@ -130,7 +130,8 @@ An interactive, scientifically calibrated solar system exploration and spaceflig
                                                ▼
                                ┌────────────────────────────────┐
                                │      Cloudflare Pages Edge     │
-                               │    https://spacexpo.pages.dev  │
+                               │   https://vorqastra.pages.dev  │
+                               │ (fallback: spacexpo.pages.dev) │
                                └────────────────────────────────┘
 ```
 

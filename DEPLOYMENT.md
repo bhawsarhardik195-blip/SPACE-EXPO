@@ -26,12 +26,12 @@ This document covers production and staging deployment procedures for **VORQASTR
 ```nginx
 server {
     listen 80;
-    server_name spaceexpo.example.com;
-    root /var/www/spaceexpo;
-    index index.html;
+    server_name vorqastra.example.com;
+    root /var/www/vorqastra;
+    index VORQASTRA.html index.html;
 
     location / {
-        try_files $uri $uri/ =404;
+        try_files $uri $uri/ /VORQASTRA.html;
     }
 
     location /audio/ {
@@ -81,7 +81,8 @@ All audio assets utilized in the production deployment are cataloged below:
 
 ## 3. Simulator Entry Points & Files
 
-- `index.html`: Default web server landing page and interactive simulator bundle.
-- `VORQASTRA Enhanced Upgrade.html`: High-precision upgraded simulator build containing photorealistic launchpad environment, volumetric atmospheric ascent, and NASA-validated astrodynamics trajectories.
-- `VORQASTRA_Enhanced.html`: Simulator build with full solar system rendering and Keplerian orbiters.
+- `VORQASTRA.html`: Complete high-precision production simulator build containing photorealistic launchpad environment, volumetric atmospheric ascent, 360° glass cockpit, and NASA-validated astrodynamics trajectories.
+- `_redirects`: Cloudflare Pages edge routing and URL rewrite rules directing `/` directly to `/VORQASTRA`.
 - `audio/`: Local directory housing all compressed MPEG audio tracks.
+- `eath view/`: High-resolution orbital and surface textures for Earth and launch facilities.
+- `screenshots/`: Reference visual captures from live simulation sessions.
