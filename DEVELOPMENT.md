@@ -1,6 +1,6 @@
-# SPACE EXPO — Developer & Local Deployment Guide
+# VORQASTRA — Developer & Local Deployment Guide
 
-This guide provides technical specifications, local execution instructions, web server configuration, and deployment procedures for the **SPACE EXPO** simulation engine.
+This guide provides technical specifications, local execution instructions, web server configuration, and deployment procedures for the **VORQASTRA** simulation engine.
 
 ---
 
@@ -17,7 +17,7 @@ This guide provides technical specifications, local execution instructions, web 
 
 ## 1. Prerequisites
 
-Because SPACE EXPO leverages modern WebGL shaders, Three.js 3D rendering pipelines, and the Web Audio API, modern web browsers enforce the **Same-Origin Policy** (CORS). Opening the HTML files directly via `file:///` in your browser will block binary textures, audio files, and scripts. 
+Because VORQASTRA leverages modern WebGL shaders, Three.js 3D rendering pipelines, and the Web Audio API, modern web browsers enforce the **Same-Origin Policy** (CORS). Opening the HTML files directly via `file:///` in your browser will block binary textures, audio files, and scripts. 
 
 To run the simulator locally, you must serve the directory through any standard local HTTP server.
 
@@ -50,14 +50,14 @@ Open your browser at `http://localhost:8080/`.
 
 ### Option C: VS Code Live Server
 1. Install the **Live Server** extension (by Ritwick Dey) in Visual Studio Code.
-2. Right-click `index.html` or `Space Expo Enhanced Upgrade.html` in the file explorer.
+2. Right-click `index.html` or `VORQASTRA Enhanced Upgrade.html` in the file explorer.
 3. Select **"Open with Live Server"**.
 
 ---
 
 ## 3. Cloudflare Pages & Production Deployment
 
-SPACE EXPO is deployed continuously to **Cloudflare Pages**:
+VORQASTRA is deployed continuously to **Cloudflare Pages**:
 - **Live URL**: [https://spacexpo.pages.dev](https://spacexpo.pages.dev)
 - **Deployment Platform**: Cloudflare Pages
 - **Repository**: Connected to `https://github.com/bhawsarhardik195-blip/SPACE-EXPO.git` (`main` branch)
@@ -116,7 +116,7 @@ Modern browsers (Chrome, Firefox, Safari, Edge) block audio context initializati
 
 ```
 ┌──────────────────────────────────────────────────────────────┐
-│                    SPACE EXPO Engine Core                    │
+│                    VORQASTRA Engine Core                    │
 ├──────────────────────────────┬───────────────────────────────┤
 │    Astrodynamics Engine      │       Rendering Engine        │
 │  • Keplerian Orbit Solver    │  • Three.js WebGL Renderer    │

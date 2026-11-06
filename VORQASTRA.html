@@ -3,7 +3,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>SPACE EXPO – Advanced Interactive Solar System &amp; Spaceflight Simulator</title>
+<title>VORQASTRA – Advanced Interactive Solar System &amp; Spaceflight Simulator</title>
 <style>
 :root{--bg:#060a16;--glass:rgba(22,28,52,.42);--edge:rgba(200,210,255,.16);--accent:#9ad7ff;--lav:#bba9ff;--pink:#ffb8d9;--warn:#ffd28a;--crit:#ff9aa8;--ok:#8ff0c8;--tx:#e4ebff;--mut:#9aa6c8;color-scheme:dark}
 *{box-sizing:border-box}*{box-sizing:border-box}html,body{width:100%;height:100%;margin:0;padding:0;background:var(--bg);color:var(--tx);font:12.5px/1.5 ui-rounded,"SF Pro Rounded",Nunito,"Segoe UI",system-ui,sans-serif;overflow:hidden}
@@ -143,7 +143,7 @@ body.imm:not(.pn) #left,body.imm:not(.pn) #right{display:none}
 #shL.hp,#shR.hp,div.hp{position:absolute;top:34%;left:1.5%;width:min(200px,22vw);padding:8px 10px;color:var(--accent);background:linear-gradient(180deg,rgba(10,30,50,.45),rgba(10,30,50,.12));border:1px solid rgba(79,209,255,.35);border-left:3px solid var(--accent);border-radius:4px;text-shadow:0 0 5px rgba(79,209,255,.6);font-size:10px;line-height:1.35;backdrop-filter:blur(3px)}
 #shR.hp.r2,div.hp.r2{left:auto;right:1.5%;color:#ffb347;border-color:rgba(255,176,32,.4);border-left:1px solid rgba(255,176,32,.4);border-right:3px solid var(--warn);text-shadow:0 0 5px rgba(255,176,32,.5)}
 @media(max-width:700px){#shR{display:none}#shL.hp,#shR.hp,div.hp{font-size:9px;top:20%}}
-.logo{letter-spacing:.32em;font-weight:700;background:linear-gradient(90deg,#9ad7ff,#bba9ff,#ffb8d9);-webkit-background-clip:text;background-clip:text;color:transparent}
+.logo{letter-spacing:.32em;font-weight:800;font-size:12.5px;text-transform:uppercase;background:linear-gradient(135deg,#ffffff 0%,#cce5ff 32%,#7ec6ff 68%,#c2afff 100%);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 8px rgba(126,198,255,0.45));display:inline-block;vertical-align:middle;user-select:none;}
 input[type=range]{width:96px;padding:0;height:4px;border:none;background:linear-gradient(90deg,var(--accent),var(--lav),var(--pink));accent-color:var(--lav);vertical-align:middle}
 summary{font-weight:600}details{border-top-color:rgba(200,210,255,.12)}
 #shL,#shR{display:none!important}
@@ -323,7 +323,7 @@ body.xo #xp{transform:none;opacity:1;pointer-events:auto}#xp .xl{color:var(--mut
 }
 
 /* ==========================================================================
-   SPACE EXPO ENHANCED: CINEMATIC HOMEPAGE, ABOUT MODAL, DUAL SPEED CONTROLS
+   VORQASTRA: CINEMATIC HOMEPAGE, ABOUT MODAL, DUAL SPEED CONTROLS
    ========================================================================== */
 
 /* --- CINEMATIC HOMEPAGE WITH EDGE-TO-EDGE FULL-SCREEN IMAGE --- */
@@ -371,7 +371,7 @@ body.xo #xp{transform:none;opacity:1;pointer-events:auto}#xp .xl{color:var(--mut
               linear-gradient(180deg, rgba(2, 4, 9, 0.35) 0%, transparent 18%, transparent 70%, rgba(2, 4, 9, 0.65) 100%);
 }
 
-/* SUBTLE BOTTOM-RIGHT CORNER BRANDING */
+/* SUBTLE BOTTOM-RIGHT CORNER BRANDING: VORQASTRA */
 .hp-brand-corner {
   position: absolute;
   right: 28px;
@@ -380,26 +380,44 @@ body.xo #xp{transform:none;opacity:1;pointer-events:auto}#xp .xl{color:var(--mut
   text-align: right;
   pointer-events: none;
   user-select: none;
-  max-width: 360px;
+  max-width: 380px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
 }
 .hp-brand-title {
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.22em;
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: 0.28em;
   text-transform: uppercase;
-  color: rgba(235, 243, 255, 0.85);
-  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.9), 0 0 12px rgba(2, 4, 9, 0.9);
+  background: linear-gradient(135deg, #ffffff 0%, #d5e9ff 35%, #88caff 70%, #c4b5ff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 0 10px rgba(110, 195, 255, 0.55)) drop-shadow(0 2px 5px rgba(0, 0, 0, 0.95));
   line-height: 1.25;
 }
+.hp-brand-sub {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255, 196, 140, 0.92);
+  text-shadow: 0 0 8px rgba(255, 153, 51, 0.45), 0 1px 4px rgba(0, 0, 0, 0.95);
+  margin-top: 3px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
 .hp-brand-tagline {
-  font-size: 10px;
+  font-size: 9.5px;
   font-weight: 400;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: rgba(165, 190, 220, 0.7);
-  text-shadow: 0 1px 5px rgba(0, 0, 0, 0.9), 0 0 10px rgba(2, 4, 9, 0.9);
+  color: rgba(165, 195, 225, 0.75);
+  text-shadow: 0 1px 5px rgba(0, 0, 0, 0.95), 0 0 10px rgba(2, 4, 9, 0.9);
   line-height: 1.35;
-  margin-top: 3px;
+  margin-top: 2px;
 }
 
 /* CENTER-BOTTOM CONTROLS DOCK */
@@ -508,6 +526,18 @@ body.xo #xp{transform:none;opacity:1;pointer-events:auto}#xp .xl{color:var(--mut
     right: 18px;
     bottom: 14px;
     max-width: 280px;
+  }
+  .hp-brand-title {
+    font-size: 13.5px;
+    letter-spacing: 0.22em;
+  }
+  .hp-brand-sub {
+    font-size: 8px;
+    letter-spacing: 0.16em;
+  }
+  .hp-brand-tagline {
+    font-size: 8px;
+    letter-spacing: 0.08em;
   }
 }
 .hp-btn-about {
@@ -1892,7 +1922,7 @@ input, select, textarea {
 /* Mission Design Mode styles removed */
 </style>
 <script>
-// Early Introduction Audio Preparation for SPACE EXPO
+// Early Introduction Audio Preparation for VORQASTRA
 (function() {
   window.EARLY_AUDIO = {
     intro: null,
@@ -2027,7 +2057,7 @@ input, select, textarea {
   </div>
   <div class="mro-badge">ORIENTATION LOCKED</div>
   <h2 class="mro-title">ROTATE YOUR DEVICE TO LANDSCAPE</h2>
-  <p class="mro-sub">SPACE EXPO is an advanced 3D solar system simulator engineered for widescreen spaceflight.</p>
+  <p class="mro-sub">VORQASTRA is an advanced 3D solar system simulator engineered for widescreen spaceflight.</p>
 </div>
 
 <!-- CINEMATIC HOMEPAGE OVERLAY -->
@@ -2044,8 +2074,9 @@ input, select, textarea {
   </button>
 
   <!-- SUBTLE BOTTOM-RIGHT BRANDING -->
-  <div class="hp-brand-corner">
-    <div class="hp-brand-title">SPACE EXPO</div>
+  <div class="hp-brand-corner" aria-label="Brand identity">
+    <div class="hp-brand-title">VORQASTRA</div>
+    <div class="hp-brand-sub">VORQASTRA — INDIA</div>
     <div class="hp-brand-tagline">Advanced Interactive Solar System and Spaceflight Simulator</div>
   </div>
 
@@ -2053,10 +2084,10 @@ input, select, textarea {
   <div class="hp-controls-dock">
     <!-- PROJECT DEVELOPERS -->
     <div class="hp-dev-card">
-      <div class="hp-dev-title">PROJECT DEVELOPERS</div>
+      <div class="hp-dev-title">PROJECT DEVELOPERS · INDIA 🇮🇳</div>
       <div class="hp-dev-names">
         <div class="hp-dev-name"><span>👨‍🚀</span> Hardik R Bhavsar</div>
-        <div class="hp-dev-name"><span>👨‍🚀</span> Shubham wastav</div>
+        <div class="hp-dev-name"><span>👨‍🚀</span> Shubham Wastav</div>
       </div>
     </div>
 
@@ -2080,13 +2111,13 @@ input, select, textarea {
 <div id="about-modal">
   <div class="about-dialog">
     <div class="about-header">
-      <h2>SPACE EXPO · ABOUT &amp; CREDITS</h2>
+      <h2><span style="display:inline-block;margin-right:6px;filter:drop-shadow(0 0 4px rgba(255,153,51,0.45));">🇮🇳</span> VORQASTRA — INDIA · ABOUT &amp; CREDITS</h2>
       <button id="btn-about-close" class="about-close-btn">✕ CLOSE</button>
     </div>
     <div class="about-body">
-      <h3>Project Overview</h3>
+      <h3>Project Overview &amp; National Identity</h3>
       <p>
-        <strong>SPACE EXPO</strong> is an advanced interactive solar system and spaceflight simulator developed to deliver authentic orbital mechanics, interplanetary transit trajectory planning, and high-fidelity spacecraft simulation in an accessible web experience.
+        <strong>VORQASTRA — INDIA</strong> is an advanced interactive solar system and spaceflight simulator developed to deliver authentic orbital mechanics, interplanetary transit trajectory planning, and high-fidelity spacecraft simulation in an accessible web experience. Engineered in India as an educational simulation platform, VORQASTRA provides interactive aerospace visualization across the solar system.
       </p>
       <div class="editable-box">
         <span class="editable-tag">EDITABLE PLACEHOLDER: PROJECT OVERVIEW &amp; OBJECTIVES</span>
@@ -2096,9 +2127,9 @@ input, select, textarea {
       <h3>Project Developers</h3>
       <div class="about-dev-grid">
         <div class="dev-card-inner">
-          <div class="dev-card-name">Hardik R Bhavsar</div>
+          <div class="dev-card-name">Hardik R Bhavsar <span style="font-size:11px;opacity:0.85;">🇮🇳</span></div>
           <div class="dev-card-role">Lead Developer &amp; Simulation Architect</div>
-          <p style="font-size:12px;color:#a8c4e0;margin:0 0 8px 0;">Co-developer of the SPACE EXPO simulator, orbital physics architecture, and mission visualization systems.</p>
+          <p style="font-size:12px;color:#a8c4e0;margin:0 0 8px 0;">Co-developer of the VORQASTRA simulator, orbital physics architecture, and mission visualization systems.</p>
           <div class="editable-box">
             <span class="editable-tag">EDITABLE: BIOGRAPHY &amp; LINKS</span>
             <div>Portfolio: [EDITABLE: https://portfolio.example.com/hardik]</div>
@@ -2107,9 +2138,9 @@ input, select, textarea {
           </div>
         </div>
         <div class="dev-card-inner">
-          <div class="dev-card-name">Subham Vastav</div>
+          <div class="dev-card-name">Shubham Wastav <span style="font-size:11px;opacity:0.85;">🇮🇳</span></div>
           <div class="dev-card-role">Simulation &amp; Graphics Developer</div>
-          <p style="font-size:12px;color:#a8c4e0;margin:0 0 8px 0;">Co-developer of the SPACE EXPO 3D rendering engine, interactive flight instrumentation, and UI systems.</p>
+          <p style="font-size:12px;color:#a8c4e0;margin:0 0 8px 0;">Co-developer of the VORQASTRA 3D rendering engine, interactive flight instrumentation, and UI systems.</p>
           <div class="editable-box">
             <span class="editable-tag">EDITABLE: BIOGRAPHY &amp; LINKS</span>
             <div>Portfolio: [EDITABLE: https://portfolio.example.com/subham]</div>
@@ -2139,7 +2170,7 @@ input, select, textarea {
       </p>
       <div class="editable-box" style="margin-bottom:12px;">
         <span class="editable-tag">EDITABLE: CONTACT DETAILS</span>
-        <div>Primary Contact Email: <strong>[EDITABLE: contact@spaceexpo.example]</strong></div>
+        <div>Primary Contact Email: <strong>[EDITABLE: contact@vorqastra.example]</strong></div>
         <div>Inquiry Type: Interactive Simulators, WebGL Experiences, Educational Tools</div>
       </div>
       
@@ -2156,7 +2187,7 @@ input, select, textarea {
 
             <h3 id="audio-credits-heading">Audio Credits &amp; Attributions</h3>
       <p style="font-size:12.5px;color:#a0bcdb;margin-bottom:12px;">
-        SPACE EXPO features high-fidelity atmospheric, cinematic, and cockpit audio engineering. The soundscapes and musical compositions used throughout the simulator are credited below with their verified sources and attributions:
+        VORQASTRA features high-fidelity atmospheric, cinematic, and cockpit audio engineering. The soundscapes and musical compositions used throughout the simulator are credited below with their verified sources and attributions:
       </p>
 
       <div class="audio-credits-grid" id="audio-credits-section">
@@ -2279,9 +2310,11 @@ input, select, textarea {
         </div>
       </div>
 
-<h3>Project Branding &amp; Legal Notice</h3>
-      <p style="font-size:11px;color:#7999b8;">
-        SPACE EXPO is an independent educational simulation project. NASA, Space Shuttle, and Solar System Scope textures and data are referenced under public domain and CC BY 4.0 licenses. SPACE EXPO is not a registered trademark and makes no claim of governmental or commercial certification.
+<h3>Project Branding &amp; Historical Heritage Notice</h3>
+      <p style="font-size:11px;color:#7999b8;line-height:1.55;">
+        <strong>VORQASTRA — INDIA</strong> is an independent educational aerospace simulation project.
+        <br><br>
+        <strong>Authentic Space Shuttle Atlantis Heritage:</strong> The simulated Space Shuttle Atlantis (OV-104) is an authentic historical simulation of NASA's orbiter spacecraft, preserved with its authentic United States flag, NASA insignia, thermal protection system tile markings, and historical vehicle identity. VORQASTRA is the interactive simulator platform identity, not the owner or manufacturer of NASA flight hardware, nor is Atlantis represented as an ISRO spacecraft. NASA and Solar System Scope textures and datasets are referenced under public domain and CC BY 4.0 licenses. VORQASTRA is not a registered trademark and makes no claim of governmental or commercial certification.
       </p>
     </div>
   </div>
@@ -2292,6 +2325,7 @@ input, select, textarea {
 (function() {
   window.__launchRequested = false;
   window.__spaceExpoReady = false;
+  window.__vorqastraReady = false;
 
   function bindHomepageHandlers() {
     var playBtn = document.getElementById('btn-play');
@@ -2333,7 +2367,7 @@ input, select, textarea {
           }
         } catch(err) {}
 
-        if (window.__spaceExpoReady && typeof window.launchSimulator === 'function') {
+        if ((window.__spaceExpoReady || window.__vorqastraReady) && typeof window.launchSimulator === 'function') {
           window.launchSimulator();
         } else {
           window.__launchRequested = true;
@@ -2400,7 +2434,7 @@ input, select, textarea {
 <div id="top" class="g">
   <!-- HUD ROW 1: BRANDING, MODE SELECTOR, UTC CLOCK, SPEED CONTROLLER & AUDIO -->
   <div class="hud-row">
-    <b class="logo">SPACEXPO</b>
+    <b class="logo">VORQASTRA</b>
     <div class="mode-switch-wrap">
       <button id="btn-mode-normal" class="mode-switch-btn active" title="Standard simulation, mission planner, launch sequences & scale tour">NORMAL MODE</button>
       <button id="btn-mode-free-roam" class="mode-switch-btn" title="Pilot spacecraft freely across the solar system with arrow keys">FREE ROAM MODE</button>
@@ -2553,7 +2587,7 @@ load(0)})();
 <script id="main-src" type="text/plain">
 // =========================================================================
 // =========================================================================
-// SPACE EXPO IMMERSIVE AUDIO ENGINE
+// VORQASTRA IMMERSIVE AUDIO ENGINE
 // =========================================================================
 const AUDIO_CONFIG = {
   assets: {
@@ -2566,7 +2600,7 @@ const AUDIO_CONFIG = {
 };
 
 // =========================================================================
-// SPACE EXPO ADVANCED PLANETARY INSPECTOR DATABASE & DEEP DIVE ENGINE
+// VORQASTRA ADVANCED PLANETARY INSPECTOR DATABASE & DEEP DIVE ENGINE
 // NASA Verified Datasets & Official Research Sources (2026)
 // =========================================================================
 const PLANETARY_DATABASE = {
@@ -5295,7 +5329,7 @@ const AudioManager = {
 
   init() {
     try {
-      const saved = localStorage.getItem('space_expo_audio_prefs');
+      const saved = localStorage.getItem('vorqastra_audio_prefs') || localStorage.getItem('space_expo_audio_prefs');
       if (saved) {
         const p = JSON.parse(saved);
         if (p.volumes) Object.assign(this.volumes, p.volumes);
@@ -5349,7 +5383,14 @@ const AudioManager = {
 
   savePrefs() {
     try {
-      localStorage.setItem('space_expo_audio_prefs', JSON.stringify({
+      localStorage.setItem('vorqastra_audio_prefs', JSON.stringify({
+      master: AudioManager.masterVolume,
+      music: AudioManager.musicVolume,
+      ambience: AudioManager.ambienceVolume,
+      sfx: AudioManager.sfxVolume,
+      muted: AudioManager.isMuted
+    }));
+    localStorage.setItem('space_expo_audio_prefs', JSON.stringify({
         volumes: this.volumes,
         muted: this.muted
       }));
@@ -8518,7 +8559,7 @@ PRE.start=function(){if(PRE.p)return PRE.p;const nf=()=>new Promise(r=>requestAn
     await nf();
     if(typeof comp!=='undefined'&&comp){cw=cv.clientWidth;ch=cv.clientHeight;comp.setSize(cw,ch);SHIP.eachTex(t=>{try{R.initTexture(t)}catch(e){}});comp.renderToScreen=false;try{comp.render()}finally{comp.renderToScreen=true}}
   });
-  if(PRE.errs.length){PRE.failed=true;PRE.ready=false;PRE.det.unshift('SpaceXpo preload failure · '+navigator.userAgent);PRE.ui('LOAD FAILED — '+PRE.errs.join(' | '),100,true);toast('Launch assets failed to load: '+PRE.errs[0]);return}
+  if(PRE.errs.length){PRE.failed=true;PRE.ready=false;PRE.det.unshift('VORQASTRA preload failure · '+navigator.userAgent);PRE.ui('LOAD FAILED — '+PRE.errs.join(' | '),100,true);toast('Launch assets failed to load: '+PRE.errs[0]);return}
   PRE.release();PRE.ready=true;PRE.ui('LAUNCH ASSETS READY',100);setTimeout(()=>{if(PRE.el)PRE.el.style.opacity='0'},1400);setTimeout(()=>{if(PRE.el&&PRE.ready){PRE.el.remove();PRE.el=null}},2200)})();
  return PRE.p};
 setTimeout(()=>{if(!PRE.p)PRE.start()},0);
@@ -10255,6 +10296,7 @@ if ($('#btn-tour-next')) $('#btn-tour-next').onclick = () => tourNext();
 updatePlanUI();
 updateCraftUI();
 window.__spaceExpoReady = true;
+window.__vorqastraReady = true;
 window.launchSimulator = launchSimulator;
 if (window.__launchRequested) {
   try {
@@ -10304,6 +10346,7 @@ window.__spaceExpo = {
   orb: (typeof orb !== 'undefined' ? orb : null),
   body: (typeof body !== 'undefined' ? body : null)
 };
+window.__vorqastra = window.__spaceExpo;
 
 
 addEventListener('error',e=>toast('Error: '+e.message));addEventListener('unhandledrejection',e=>toast('Error: '+e.reason));
@@ -10314,7 +10357,7 @@ addEventListener('error',e=>toast('Error: '+e.message));addEventListener('unhand
 </script><!-- COMPACT AUDIO CONTROLS & MIXER PANEL -->
 <div id="audio-panel">
   <div class="ap-header">
-    <div class="ap-title">SPACE EXPO · IMMERSIVE AUDIO</div>
+    <div class="ap-title">VORQASTRA · IMMERSIVE AUDIO</div>
     <button id="ap-close-btn" class="ap-close" title="Close panel">✕</button>
   </div>
   <button id="ap-mute-btn" class="ap-mute-btn">

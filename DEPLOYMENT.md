@@ -1,6 +1,6 @@
-# SPACE EXPO — Deployment & Systems Documentation
+# VORQASTRA — Deployment & Systems Documentation
 
-This document covers production and staging deployment procedures for **SPACE EXPO: Advanced Interactive Solar System and Spaceflight Simulator**, along with audio pipeline specifications and complete asset credits.
+This document covers production and staging deployment procedures for **VORQASTRA: Advanced Interactive Solar System and Spaceflight Simulator**, along with audio pipeline specifications and complete asset credits.
 
 ---
 
@@ -82,6 +82,6 @@ All audio assets utilized in the production deployment are cataloged below:
 ## 3. Simulator Entry Points & Files
 
 - `index.html`: Default web server landing page and interactive simulator bundle.
-- `Space Expo Enhanced Upgrade.html`: High-precision upgraded simulator build containing photorealistic launchpad environment, volumetric atmospheric ascent, and NASA-validated astrodynamics trajectories.
-- `SpaceExpo_Enhanced.html`: Simulator build with full solar system rendering and Keplerian orbiters.
+- `VORQASTRA Enhanced Upgrade.html`: High-precision upgraded simulator build containing photorealistic launchpad environment, volumetric atmospheric ascent, and NASA-validated astrodynamics trajectories.
+- `VORQASTRA_Enhanced.html`: Simulator build with full solar system rendering and Keplerian orbiters.
 - `audio/`: Local directory housing all compressed MPEG audio tracks.

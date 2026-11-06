@@ -1,4 +1,4 @@
-# SPACE EXPO — Advanced Interactive Solar System & Spaceflight Simulator
+# VORQASTRA — Advanced Interactive Solar System & Spaceflight Simulator
 
 <div align="center">
 
@@ -18,7 +18,7 @@ An interactive, scientifically calibrated solar system exploration and spaceflig
 
 ## 🌌 Project Overview
 
-**SPACE EXPO** pairs physically grounded Keplerian astrodynamics with high-fidelity 3D spacecraft piloting, realistic atmospheric ascent, an interactive 360° flight deck cockpit, and spatial acoustic audio. Built with Three.js and WebGL, the simulation enables users to explore the solar system at true relative scales, inspect planetary bodies, and command interplanetary orbital transfers calculated with NASA JPL ephemeris parameters.
+**VORQASTRA** pairs physically grounded Keplerian astrodynamics with high-fidelity 3D spacecraft piloting, realistic atmospheric ascent, an interactive 360° flight deck cockpit, and spatial acoustic audio. Built with Three.js and WebGL, the simulation enables users to explore the solar system at true relative scales, inspect planetary bodies, and command interplanetary orbital transfers calculated with NASA JPL ephemeris parameters.
 
 ---
 
@@ -119,7 +119,7 @@ An interactive, scientifically calibrated solar system exploration and spaceflig
                                                │
                                                ▼
 ┌─────────────────────────────────────────────────────────────────────────────────────────────┐
-│                                   SPACE EXPO Engine Core                                    │
+│                                   VORQASTRA Engine Core                                    │
 ├──────────────────────────────┬──────────────────────────────┬───────────────────────────────┤
 │    Astrodynamics Engine      │       Rendering Engine       │         Audio Manager         │
 │  • Keplerian Orbit Solver    │  • Three.js WebGL Scene      │  • Multi-Bus Web Audio Graph  │
@@ -141,7 +141,7 @@ An interactive, scientifically calibrated solar system exploration and spaceflig
 ```
 uploading/
 ├── index.html                           # Root entry point & universal redirector
-├── Space Expo Enhanced Upgrade.html     # Complete production simulation engine & WebGL bundle
+├── VORQASTRA.html                       # Complete production simulation engine & WebGL bundle
 ├── _redirects                           # Cloudflare Pages SPA rewrite and redirect rules
 ├── .gitignore                           # Git exclusion rules
 ├── README.md                            # Comprehensive project documentation
@@ -173,7 +173,7 @@ uploading/
 
 ## 🎵 Audio Credits & Attributions
 
-SPACE EXPO features an adaptive multi-channel spatial audio architecture built on the Web Audio API with dynamic ducking, cross-fading, and cabin isolation filters. All audio tracks, soundscapes, and acoustic assets used within the simulator are credited below with their verified creator and source attributions:
+VORQASTRA features an adaptive multi-channel spatial audio architecture built on the Web Audio API with dynamic ducking, cross-fading, and cabin isolation filters. All audio tracks, soundscapes, and acoustic assets used within the simulator are credited below with their verified creator and source attributions:
 
 | Audio Role / Simulator Usage | Project File Path | Audio Track Title | Creator / Channel | Source Link | Verification Status |
 | :--- | :--- | :--- | :--- | :--- | :--- |
@@ -214,5 +214,5 @@ Open your browser at `http://localhost:8080/`.
 ---
 
 <div align="center">
-  <sub>SPACE EXPO © 2026. Developed by Hardik R Bhavsar & Sugam Vasta.</sub>
+  <sub>VORQASTRA © 2026. Developed by Hardik R Bhavsar & Sugam Vasta.</sub>
 </div>
